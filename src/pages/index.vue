@@ -10,9 +10,16 @@
       <div class="wrap">
         <aside class="filters">
           <h4>Filters:</h4>
-
-          <div>ABV greater than <input type="text"></div>
-          <div>ABV less than <input type="text"></div>
+          <div class="field">ABV greater than
+            <form><input v-model="abvGtFilter" type="text"></form>
+          </div>
+          <div class="field">ABV less than
+            <form><input v-model="abvLtFilter" type="text"></form>
+          </div>
+          <a class="btn" @click="getSumFilters">Apply</a>
+          <div class="tar">
+            <a @click="resetFilters" class="link">Reset all filters</a>
+          </div>
 
         </aside>
         <div class="list">
@@ -33,7 +40,10 @@ export default {
   data() {
     return {
       def: 'test',
-      resultItems: []
+      resultItems: [],
+      abvGtFilter: '',
+      abvLtFilter: '',
+      sumFilters: ''
     }
   },
   created() {
@@ -48,14 +58,35 @@ export default {
     )
   },
   methods: {
-    applyFilters() {}
+    getSumFilters() {
+      if (this.sumFilters) {
+        this.sumFilters = ''
+      }
+      if (this.abvGtFilter) {
+        this.sumFilters += `abv_gt=${this.abvGtFilter}`
+      }
+      if (this.abvLtFilter) {
+        this.sumFilters += `&abv_lt=${this.abvLtFilter}`
+      }
+      this.applyFilters()
+    },
+    applyFilters() {
+      this.$http.get(`https://api.punkapi.com/v2/beers?${this.sumFilters}`).then(
+        resp => {
+          console.log(resp)
+          this.resultItems = resp.data
+        },
+        err => {
+          console.error(err)
+        }
+      )
+    },
+    resetFilters() {
+      ;(this.sumFilters = ''), (this.abvGtFilter = ''), (this.abvLtFilter = '')
+
+      this.applyFilters()
+    }
   }
-  // computed: {
-
-  // },
-  // watch: {
-
-  // }
 }
 </script>
 
@@ -98,18 +129,39 @@ body {
 
     .filters {
       width: 270px;
-      height: 400px;
-      padding: 0 30px;
+      padding: 20px 30px;
       background-color: $grey;
       border: 1px solid #ccc;
       position: fixed;
-      div {
+      h4 {
+        margin-top: 0;
+      }
+      .field {
         margin-bottom: 10px;
         display: flex;
         justify-content: space-between;
         input {
           width: 35px;
         }
+      }
+      .btn {
+        font-size: 14px;
+        font-weight: 700;
+        background-color: #000;
+        color: #fff;
+        display: block;
+        padding: 10px 15px;
+        text-align: center;
+        text-transform: uppercase;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        cursor: pointer;
+      }
+      .link {
+        font-size: 13px;
+        color: #555;
+        text-align: right;
+        cursor: pointer;
       }
     }
     .list {
@@ -142,5 +194,8 @@ body {
       }
     }
   }
+}
+.tar {
+  text-align: right;
 }
 </style>
