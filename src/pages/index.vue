@@ -10,9 +10,13 @@
       <div class="wrap">
         <aside class="filters">
           <h4>Filters:</h4>
+
+          <div>ABV greater than <input type="text"></div>
+          <div>ABV less than <input type="text"></div>
+
         </aside>
         <div class="list">
-          <div v-for="i in items" :key="i.id" class="card">
+          <div v-for="i in resultItems" :key="i.id" class="card">
             <h3>{{i.name}}</h3>
             <p>{{i.tagline}}</p>
             <p>{{i.description}}</p>
@@ -29,23 +33,23 @@ export default {
   data() {
     return {
       def: 'test',
-      items: []
+      resultItems: []
     }
   },
   created() {
     this.$http.get('https://api.punkapi.com/v2/beers').then(
       resp => {
         console.log(resp)
-        this.items = resp.data
+        this.resultItems = resp.data
       },
       err => {
         console.error(err)
       }
     )
+  },
+  methods: {
+    applyFilters() {}
   }
-  // methods: {
-
-  // },
   // computed: {
 
   // },
@@ -91,8 +95,7 @@ body {
   }
   section.beers {
     margin: 80px 0 40px;
-    .wrap {
-    }
+
     .filters {
       width: 270px;
       height: 400px;
@@ -100,6 +103,14 @@ body {
       background-color: $grey;
       border: 1px solid #ccc;
       position: fixed;
+      div {
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        input {
+          width: 35px;
+        }
+      }
     }
     .list {
       display: grid;
