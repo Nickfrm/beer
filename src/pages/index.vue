@@ -9,6 +9,14 @@
     <section class="beers">
       <div class="wrap">
         <aside class="filters">
+          <h4>Search your beer:</h4>
+          <div class="search">
+            <form>
+              <input v-model="name" type="text">
+            </form>
+            <a @click="searchBeer" class="btn">Go!</a>
+          </div>
+          <p class="small">or apply some filters</p>
           <h4>Filters:</h4>
           <div class="field">ABV greater than
             <form><input v-model="abvGtFilter" type="text"></form>
@@ -43,7 +51,8 @@ export default {
       resultItems: [],
       abvGtFilter: '',
       abvLtFilter: '',
-      sumFilters: ''
+      sumFilters: '',
+      name: ''
     }
   },
   created() {
@@ -83,8 +92,10 @@ export default {
     },
     resetFilters() {
       ;(this.sumFilters = ''), (this.abvGtFilter = ''), (this.abvLtFilter = '')
-
       this.applyFilters()
+    },
+    searchBeer() {
+      resetFilters()
     }
   }
 }
@@ -135,6 +146,27 @@ body {
       position: fixed;
       h4 {
         margin-top: 0;
+      }
+      .search {
+        margin-bottom: 20px;
+        display: grid;
+        grid: 20px / 2fr 1fr;
+        gap: 20px;
+        input {
+          height: 14px;
+          padding: 0 10px;
+        }
+        .btn {
+          font-size: 12px;
+          padding: 0 15px;
+          height: 20px;
+          line-height: 20px;
+          margin: 0;
+        }
+      }
+      .small {
+        font-size: 13px;
+        color: #666;
       }
       .field {
         margin-bottom: 10px;
