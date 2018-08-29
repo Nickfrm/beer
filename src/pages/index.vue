@@ -27,7 +27,7 @@
             </div>
             <a class="btn" @click="getSumFilters">Apply</a>
             <div class="tar">
-              <a @click="resetFilters" class="link">Reset all</a>
+              <a @click="resetAll" class="link">Reset all</a>
             </div>
           </form>
         </aside>
@@ -35,22 +35,25 @@
           Sorry! We have no results from your search. <br> Please change your request and try again.
         </div>
         <div class="single-beer" v-if="noList===2">
-          <h2>{{singleBeer.name}}</h2>
-          <p>{{singleBeer.description}}</p>
-          <p>ABV: {{singleBeer.abv}}</p>
-          <p>Boil volume: {{singleBeer.boil_volume.value}} {{singleBeer.boil_volume.unit}}</p>
-          <p>EBC: {{singleBeer.ebc}}</p>
-          <p>IBU: {{singleBeer.ibu}}</p>
-          <p>
-            <b>{{singleBeer.tagline}}</b>
-          </p>
+          <div>
+            <h2>{{singleBeer.name}}</h2>
+            <p>{{singleBeer.description}}</p>
+            <p>ABV: {{singleBeer.abv}}</p>
+            <!-- <p>Boil volume: {{singleBeer.boil_volume.value}} {{singleBeer.boil_volume.unit}}</p> -->
+            <p>EBC: {{singleBeer.ebc}}</p>
+            <p>IBU: {{singleBeer.ibu}}</p>
+            <p>
+              <b>{{singleBeer.tagline}}</b>
+            </p>
+          </div>
+          <img :src="`${singleBeer.image_url}`" alt=" ">
         </div>
-        <div v-if="noList===0" class="list">
-          <div v-for="i in resultItems" :key="i.id" class="card">
+        <div v-if="noList===0 " class="list ">
+          <div v-for="i in resultItems " :key="i.id " class="card ">
             <h3>{{i.name}}</h3>
             <p>{{i.tagline}}</p>
             <p>{{i.description}}</p>
-            <a @click="getSingleBeer(i.id)">Learn more</a>
+            <a @click="getSingleBeer(i.id) ">Learn more</a>
           </div>
         </div>
       </div>
@@ -106,13 +109,18 @@ export default {
         }
       )
     },
-    resetFilters() {
-      ;(this.sumFilters = ''), (this.abvGtFilter = ''), (this.abvLtFilter = ''), (this.name = '')
+    resetAll() {
+      ;(this.sumFilters = ''),
+        (this.abvGtFilter = ''),
+        (this.abvLtFilter = ''),
+        (this.name = ''),
+        (this.singleBeer = '')
       this.applyFilters()
       this.noList = 0
     },
     searchBeer() {
       this.sumFilters = ''
+      // need to clear all with no refresh
       let arr = this.name.split(' ')
       let names = arr.join('_')
       this.$http.get(`https://api.punkapi.com/v2/beers?beer_name=${names}`).then(
@@ -280,6 +288,13 @@ body {
       padding: 20px 30px;
       background-color: $grey;
       border: 1px solid #ccc;
+      display: grid;
+      grid: auto / 1fr 1fr;
+      gap: 20px;
+      justify-items: center;
+      img {
+        max-height: 350px;
+      }
     }
   }
 }
