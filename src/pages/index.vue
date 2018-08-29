@@ -95,7 +95,19 @@ export default {
       this.applyFilters()
     },
     searchBeer() {
-      resetFilters()
+      this.sumFilters = ''
+      let arr = this.name.split(' ')
+      let names = arr.join('_')
+      console.log(names)
+      this.$http.get(`https://api.punkapi.com/v2/beers?beer_name=${names}`).then(
+        resp => {
+          console.log(resp)
+          this.resultItems = resp.data
+        },
+        err => {
+          console.error(err)
+        }
+      )
     }
   }
 }
