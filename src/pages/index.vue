@@ -12,25 +12,29 @@
           <h4>Search your beer:</h4>
           <div class="search">
             <form>
-              <input v-model="name" type="text">
+              <input v-model="name" required="required" type="text">
             </form>
             <a @click="searchBeer" class="btn">Go!</a>
           </div>
           <p class="small">or apply some filters</p>
           <h4>Filters:</h4>
-          <div class="field">ABV greater than
-            <form><input v-model="abvGtFilter" type="text"></form>
-          </div>
-          <div class="field">ABV less than
-            <form><input v-model="abvLtFilter" type="text"></form>
-          </div>
-          <a class="btn" @click="getSumFilters">Apply</a>
-          <div class="tar">
-            <a @click="resetFilters" class="link">Reset all filters</a>
-          </div>
-
+          <form>
+            <div class="field">ABV greater than
+              <input v-model="abvGtFilter" type="text">
+            </div>
+            <div class="field">ABV less than
+              <input v-model="abvLtFilter" type="text">
+            </div>
+            <a class="btn" @click="getSumFilters">Apply</a>
+            <div class="tar">
+              <a @click="resetFilters" class="link">Reset all</a>
+            </div>
+          </form>
         </aside>
-        <div class="list">
+        <div v-if="noResult===true" class="error-msg">
+          Sorry! We have no results from your search. <br> Please change your request and try again.
+        </div>
+        <div v-if="noResult===false" class="list">
           <div v-for="i in resultItems" :key="i.id" class="card">
             <h3>{{i.name}}</h3>
             <p>{{i.tagline}}</p>
@@ -52,7 +56,8 @@ export default {
       abvGtFilter: '',
       abvLtFilter: '',
       sumFilters: '',
-      name: ''
+      name: '',
+      noResult: false
     }
   },
   created() {
@@ -91,18 +96,23 @@ export default {
       )
     },
     resetFilters() {
-      ;(this.sumFilters = ''), (this.abvGtFilter = ''), (this.abvLtFilter = '')
+      ;(this.sumFilters = ''), (this.abvGtFilter = ''), (this.abvLtFilter = ''), (this.name = '')
       this.applyFilters()
+      this.noResult = false
     },
     searchBeer() {
       this.sumFilters = ''
       let arr = this.name.split(' ')
       let names = arr.join('_')
-      console.log(names)
       this.$http.get(`https://api.punkapi.com/v2/beers?beer_name=${names}`).then(
         resp => {
           console.log(resp)
-          this.resultItems = resp.data
+          if (resp.data.length) {
+            this.resultItems = resp.data
+            this.noResult = false
+          } else {
+            this.noResult = true
+          }
         },
         err => {
           console.error(err)
@@ -236,6 +246,11 @@ body {
           color: #333;
         }
       }
+    }
+    .error-msg {
+      margin-left: 360px;
+      font-size: 22px;
+      text-align: center;
     }
   }
 }
