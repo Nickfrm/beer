@@ -60,12 +60,14 @@
     </section>
     <div class="pagination">
       <div class="wrap">
-        <div @click="changePage(-1)" class="prev">
-          <div class="arrow left"></div> Previous page
-        </div>
-        <div class="current-page">{{currPage}}</div>
-        <div @click="changePage(1)" class="next">Next page
-          <div class="arrow right"></div>
+        <div class="nav">
+          <div @click="changePage(-1)" class="prev">
+            <div class="arrow left"></div> Previous page
+          </div>
+          <div class="current-page">{{currPage}}</div>
+          <div @click="changePage(1)" class="next">Next page
+            <div class="arrow right"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -189,12 +191,9 @@ export default {
 $l-grey: #fcfcfc;
 $grey: #f4f4f4;
 $d-grey: #ddd;
-
 body {
   margin: 0;
   font-family: 'Arial';
-  padding-bottom: 80px;
-  position: relative;
   header {
     position: fixed;
     top: 0;
@@ -225,7 +224,7 @@ body {
   }
   section.beers {
     margin: 80px 0 20px;
-
+    min-height: calc(100vh - 151px);
     .filters {
       width: 270px;
       padding: 20px 30px;
@@ -334,36 +333,36 @@ body {
     }
   }
   .pagination {
-    background-color: $grey;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    border-top: 1px solid #ccc;
     .wrap {
-      max-width: 400px;
-      height: 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      .prev,
-      .next {
-        cursor: pointer;
-        .arrow {
-          width: 0;
-          height: 0;
-          border-top: 6px solid transparent;
-          border-bottom: 6px solid transparent;
-          display: inline-block;
-          &.right {
-            border-left: 6px solid #000;
-          }
-          &.left {
-            border-right: 6px solid #000;
+      .nav {
+        height: 50px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-left: 360px;
+        border-top: 1px solid #ccc;
+        .prev,
+        .next {
+          cursor: pointer;
+          .arrow {
+            width: 0;
+            height: 0;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            display: inline-block;
+            &.right {
+              border-left: 6px solid #000;
+              margin-left: 8px;
+            }
+            &.left {
+              border-right: 6px solid #000;
+              margin-right: 8px;
+            }
           }
         }
-      }
-      .current-page {
-        font-size: 18px;
+        .current-page {
+          font-size: 18px;
+        }
       }
     }
   }
