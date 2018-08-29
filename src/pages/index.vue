@@ -31,15 +31,26 @@
             </div>
           </form>
         </aside>
-        <div v-if="noResult===true" class="error-msg">
+        <div v-if="noList===1" class="error-msg">
           Sorry! We have no results from your search. <br> Please change your request and try again.
         </div>
-        <div v-if="noResult===false" class="list">
+        <div class="single-beer" v-if="noList===2">
+          <h2>{{singleBeer.name}}</h2>
+          <p>{{singleBeer.description}}</p>
+          <p>ABV: {{singleBeer.abv}}</p>
+          <p>Boil volume: {{singleBeer.boil_volume.value}} {{singleBeer.boil_volume.unit}}</p>
+          <p>EBC: {{singleBeer.ebc}}</p>
+          <p>IBU: {{singleBeer.ibu}}</p>
+          <p>
+            <b>{{singleBeer.tagline}}</b>
+          </p>
+        </div>
+        <div v-if="noList===0" class="list">
           <div v-for="i in resultItems" :key="i.id" class="card">
             <h3>{{i.name}}</h3>
             <p>{{i.tagline}}</p>
             <p>{{i.description}}</p>
-            <a>Learn more</a>
+            <a @click="getSingleBeer(i.id)">Learn more</a>
           </div>
         </div>
       </div>
@@ -57,7 +68,8 @@ export default {
       abvLtFilter: '',
       sumFilters: '',
       name: '',
-      noResult: false
+      noList: 0,
+      singleBeer: {}
     }
   },
   created() {
@@ -87,7 +99,6 @@ export default {
     applyFilters() {
       this.$http.get(`https://api.punkapi.com/v2/beers?${this.sumFilters}`).then(
         resp => {
-          console.log(resp)
           this.resultItems = resp.data
         },
         err => {
@@ -98,7 +109,7 @@ export default {
     resetFilters() {
       ;(this.sumFilters = ''), (this.abvGtFilter = ''), (this.abvLtFilter = ''), (this.name = '')
       this.applyFilters()
-      this.noResult = false
+      this.noList = 0
     },
     searchBeer() {
       this.sumFilters = ''
@@ -109,10 +120,21 @@ export default {
           console.log(resp)
           if (resp.data.length) {
             this.resultItems = resp.data
-            this.noResult = false
+            this.noList = 0
           } else {
-            this.noResult = true
+            this.noList = 1
           }
+        },
+        err => {
+          console.error(err)
+        }
+      )
+    },
+    getSingleBeer(id) {
+      this.noList = 2
+      this.$http.get(`https://api.punkapi.com/v2/beers/${id}`).then(
+        resp => {
+          this.singleBeer = resp.data[0]
         },
         err => {
           console.error(err)
@@ -244,6 +266,7 @@ body {
         a {
           font-weight: 700;
           color: #333;
+          cursor: pointer;
         }
       }
     }
@@ -251,6 +274,12 @@ body {
       margin-left: 360px;
       font-size: 22px;
       text-align: center;
+    }
+    .single-beer {
+      margin-left: 360px;
+      padding: 20px 30px;
+      background-color: $grey;
+      border: 1px solid #ccc;
     }
   }
 }
