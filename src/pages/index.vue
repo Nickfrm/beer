@@ -58,6 +58,17 @@
         </div>
       </div>
     </section>
+    <div class="pagination">
+      <div class="wrap">
+        <div @click="changePage(-1)" class="prev">
+          <div class="arrow left"></div> Previous page
+        </div>
+        <div class="current-page">{{currPage}}</div>
+        <div @click="changePage(1)" class="next">Next page
+          <div class="arrow right"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -72,7 +83,8 @@ export default {
       sumFilters: '',
       name: '',
       noList: 0,
-      singleBeer: {}
+      singleBeer: {},
+      currPage: 1
     }
   },
   created() {
@@ -148,6 +160,26 @@ export default {
           console.error(err)
         }
       )
+    },
+    changePage(dir) {
+      if (this.currPage === 1 && dir === -1) return
+
+      let nextPage = this.currPage + dir
+      this.$http.get(`https://api.punkapi.com/v2/beers?${this.sumFilters}&page=${nextPage}`).then(
+        resp => {
+          if (resp.data.length === 0) return
+          this.resultItems = resp.data
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+          })
+          this.currPage = nextPage
+        },
+        err => {
+          console.error(err)
+        }
+      )
     }
   }
 }
@@ -156,9 +188,13 @@ export default {
 <style lang="scss">
 $l-grey: #fcfcfc;
 $grey: #f4f4f4;
+$d-grey: #ddd;
+
 body {
   margin: 0;
   font-family: 'Arial';
+  padding-bottom: 80px;
+  position: relative;
   header {
     position: fixed;
     top: 0;
@@ -188,7 +224,7 @@ body {
     margin: 0 auto;
   }
   section.beers {
-    margin: 80px 0 40px;
+    margin: 80px 0 20px;
 
     .filters {
       width: 270px;
@@ -294,6 +330,40 @@ body {
       justify-items: center;
       img {
         max-height: 350px;
+      }
+    }
+  }
+  .pagination {
+    background-color: $grey;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    border-top: 1px solid #ccc;
+    .wrap {
+      max-width: 400px;
+      height: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .prev,
+      .next {
+        cursor: pointer;
+        .arrow {
+          width: 0;
+          height: 0;
+          border-top: 6px solid transparent;
+          border-bottom: 6px solid transparent;
+          display: inline-block;
+          &.right {
+            border-left: 6px solid #000;
+          }
+          &.left {
+            border-right: 6px solid #000;
+          }
+        }
+      }
+      .current-page {
+        font-size: 18px;
       }
     }
   }
