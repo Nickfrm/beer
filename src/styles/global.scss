@@ -4,17 +4,20 @@
    width: 100%;
    border-bottom: 1px solid #ccc;
    background-color: $l-grey;
+
    .wrap {
      height: 50px;
      display: flex;
      align-items: center;
      justify-content: space-between;
+
      a {
        &.logo {
          font-size: 28px;
          font-weight: 900;
          color: #232323;
        }
+
        &.cart {
          text-transform: uppercase;
          font-weight: 700;
@@ -32,4 +35,9 @@
    margin: 51px 0 0;
    padding-top: 25px;
    font-family: 'Arial';
+ }
+
+ p {
+   margin: 0;
+   padding: 0;
  }

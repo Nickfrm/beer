@@ -3,33 +3,31 @@
 
     <section class="beers">
       <div class="wrap">
-        <aside class="filters">
+        <aside>
           <h4>Search your beer:</h4>
-          <div class="search">
-            <form>
-              <input v-model="name" required="required" type="text">
-            </form>
-            <a @click="searchBeer" class="btn">Go!</a>
-          </div>
-          <p class="small">or apply some filters</p>
+          <form @submit.prevent="searchBeer" class="search">
+            <input v-model="name" required="required" type="text">
+            <custom-button>Go!</custom-button>
+            <p class="small">or apply some filters</p>
+          </form>
           <h4>Filters:</h4>
-          <form>
+          <form @submit.prevent="getSumFilters" class="filters">
             <div class="field">ABV greater than
               <input v-model="abvGtFilter" type="text">
             </div>
             <div class="field">ABV less than
               <input v-model="abvLtFilter" type="text">
             </div>
-            <a class="btn" @click="getSumFilters">Apply</a>
+            <custom-button>Apply</custom-button>
             <div class="tar">
               <a @click="resetAll" class="link">Reset all</a>
+              <custom-link type="button" @click="resetAll">Reset All</custom-link>
             </div>
           </form>
         </aside>
         <div v-if="noList===1" class="error-msg">
           Sorry! We have no results from your search. <br> Please change your request and try again.
         </div>
-        <!-- <custom-button :disabled="true">SLOT CONTENT</custom-button> -->
         <div v-if="noList===0 " class="list ">
           <div v-for="i in resultItems " :key="i.id " class="card ">
             <h3>{{i.name}}</h3>
@@ -57,9 +55,9 @@
 </template>
 
 <script>
-import customButton from '@/components/button'
+// import customButton from '@/components/button'
 export default {
-  components: { customButton },
+  // components: { customButton },
   data() {
     return {
       def: 'test',
@@ -108,6 +106,7 @@ export default {
       )
     },
     resetAll() {
+      console.log('test')
       ;(this.sumFilters = ''),
         (this.abvGtFilter = ''),
         (this.abvLtFilter = ''),
@@ -160,7 +159,7 @@ export default {
 section.beers {
   margin: 0 0 20px;
   min-height: calc(100vh - 151px);
-  .filters {
+  aside {
     width: 270px;
     padding: 20px 30px;
     background-color: $grey;
@@ -172,50 +171,34 @@ section.beers {
     .search {
       margin-bottom: 20px;
       display: grid;
-      grid: 20px / 2fr 1fr;
-      gap: 20px;
+      grid: auto / 2fr 1fr;
+      grid-gap: 20px;
       input {
-        height: 14px;
+        height: 26px;
         padding: 0 10px;
+        border: 1px solid #ccc;
       }
-      .btn {
-        font-size: 12px;
-        padding: 0 15px;
-        height: 20px;
-        line-height: 20px;
-        margin: 0;
+      .small {
+        font-size: 13px;
+        color: #666;
       }
     }
-    .small {
-      font-size: 13px;
-      color: #666;
-    }
-    .field {
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      input {
-        width: 35px;
+    .filters {
+      .field {
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        input {
+          width: 35px;
+        }
       }
-    }
-    .btn {
-      font-size: 14px;
-      font-weight: 700;
-      background-color: #000;
-      color: #fff;
-      display: block;
-      padding: 10px 15px;
-      text-align: center;
-      text-transform: uppercase;
-      margin-top: 20px;
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
-    .link {
-      font-size: 13px;
-      color: #555;
-      text-align: right;
-      cursor: pointer;
+      .btn-cta {
+        width: 100%;
+        margin-bottom: 16px;
+      }
+      .link {
+        text-align: right;
+      }
     }
   }
   .list {
@@ -252,19 +235,6 @@ section.beers {
     margin-left: 360px;
     font-size: 22px;
     text-align: center;
-  }
-  .single-beer {
-    margin-left: 360px;
-    padding: 20px 30px;
-    background-color: $grey;
-    border: 1px solid #ccc;
-    display: grid;
-    grid: auto / 1fr 1fr;
-    gap: 20px;
-    justify-items: center;
-    img {
-      max-height: 350px;
-    }
   }
 }
 .pagination {

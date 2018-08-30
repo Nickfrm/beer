@@ -34,4 +34,19 @@ export default {
   }
 }
 </script>
-
+<style lang="scss">
+@import '~styles/variables';
+.single-beer {
+  margin-left: 360px;
+  padding: 20px 30px;
+  background-color: $grey;
+  border: 1px solid #ccc;
+  display: grid;
+  grid: auto / 1fr 1fr;
+  gap: 20px;
+  justify-items: center;
+  img {
+    max-height: 350px;
+  }
+}
+</style>
