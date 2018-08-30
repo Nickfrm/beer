@@ -1,0 +1,37 @@
+<template>
+  <div v-if="loading" class="loader">LOADING</div>
+  <div v-else class="single-beer">
+    <div>
+      <h2>{{beer.name}}</h2>
+      <p>{{beer.description}}</p>
+      <p>ABV: {{beer.abv}}</p>
+      <!-- <p>Boil volume: {{beer.boil_volume.value}} {{beer.boil_volume.unit}}</p> -->
+      <p>EBC: {{beer.ebc}}</p>
+      <p>IBU: {{beer.ibu}}</p>
+      <p>
+        <b>{{beer.tagline}}</b>
+      </p>
+    </div>
+    <img :src="`${beer.image_url}`" alt=" ">
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      beer: {},
+      loading: 0
+    }
+  },
+  created() {
+    this.loading = 1
+    this.$http
+      .get(`https://api.punkapi.com/v2/beers/${this.$route.params.id}`)
+      .then(resp => (this.beer = resp.data[0]), err => console.error(err))
+      .finally(() => {
+        this.loading = 0
+      })
+  }
+}
+</script>
+
