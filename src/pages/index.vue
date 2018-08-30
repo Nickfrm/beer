@@ -29,7 +29,7 @@
         <div v-if="noList===1" class="error-msg">
           Sorry! We have no results from your search. <br> Please change your request and try again.
         </div>
-        <custom-button :disabled="true">SLOT CONTENT</custom-button>
+        <!-- <custom-button :disabled="true">SLOT CONTENT</custom-button> -->
         <div v-if="noList===0 " class="list ">
           <div v-for="i in resultItems " :key="i.id " class="card ">
             <h3>{{i.name}}</h3>
@@ -144,11 +144,6 @@ export default {
         resp => {
           if (resp.data.length === 0) return
           this.resultItems = resp.data
-          window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: 'smooth'
-          })
           this.currPage = nextPage
         },
         err => {
@@ -163,7 +158,7 @@ export default {
 <style lang="scss">
 @import '~styles/variables';
 section.beers {
-  margin: 80px 0 20px;
+  margin: 0 0 20px;
   min-height: calc(100vh - 151px);
   .filters {
     width: 270px;
