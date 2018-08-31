@@ -25,7 +25,7 @@
           <h4>Filters:</h4>
           <form @submit.prevent="applyFilters" class="filters">
             <div class="form-field">
-              <select v-model="abv">
+              <select v-model="abv" :class="{active:abv!==''}">
                 <option disabled value="">Alcohol by volume</option>
                 <option value="abv_lt=4">Very low alcoholic</option>
                 <option value="abv_gt=4&abv_lt=10">Low alcoholic</option>
@@ -33,7 +33,14 @@
                 <option value="abv_gt=20&abv_lt=35">High alcoholic</option>
                 <option value="abv_gt=35">Blowing your mind</option>
               </select>
-
+              <select v-model="ibu" :class="{active:ibu!==''}">
+                <option disabled value="">Bitterness</option>
+                <option value="ibu_lt=10">Slight bitterness</option>
+                <option value="ibu_gt=10&ibu_lt=25">Average bitterness</option>
+                <option value="ibu_gt=25&ibu_lt=45">Medium bitterness</option>
+                <option value="ibu_gt=45&ibu_lt=80">Strong bitterness</option>
+                <option value="ibu_gt=80&ibu_lt=120">Try not to cry</option>
+              </select>
             </div>
             <custom-button>Apply</custom-button>
             <div class="tar">
@@ -66,8 +73,7 @@ export default {
     return {
       resultItems: [],
       abv: '',
-      abvGtFilter: '',
-      abvLtFilter: '',
+      ibu: '',
       sumFilters: '',
       name: '',
       noList: 0,
@@ -89,7 +95,7 @@ export default {
   },
   methods: {
     getSumFilters() {
-      this.sumFilters = `${this.abv}`
+      this.sumFilters = `${this.abv}&${this.ibu}`
     },
     applyFilters() {
       this.getSumFilters()
@@ -168,6 +174,7 @@ section.beers {
     background-color: $grey;
     border: 1px solid #ccc;
     position: fixed;
+    top: 76px;
     h4 {
       margin-top: 0;
     }
@@ -188,13 +195,19 @@ section.beers {
     }
     .filters {
       .form-field {
-        margin-bottom: 24px;
+        margin-bottom: 32px;
+        display: grid;
+        grid-gap: 16px;
         select {
           width: 100%;
           height: 28px;
           font-size: 14px;
           border: 1px solid #ccc;
-          color: #333;
+          color: #aaa;
+          &.active {
+            color: #333;
+            border-color: #bbb;
+          }
         }
       }
       .btn-cta {
