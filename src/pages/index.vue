@@ -41,6 +41,16 @@
                 <option value="ibu_gt=45&ibu_lt=80">Strong bitterness</option>
                 <option value="ibu_gt=80&ibu_lt=120">Try not to cry</option>
               </select>
+              <div class="ebc">
+                <div>
+                  <input type="radio" id="one" value="ebc_lt=20" v-model="ebc">
+                  <label for="one">Light beer</label>
+                </div>
+                <div>
+                  <input type="radio" id="two" value="ebc_gt=20" v-model="ebc">
+                  <label for="two">Dark beer</label>
+                </div>
+              </div>
             </div>
             <custom-button>Apply</custom-button>
             <div class="tar">
@@ -74,6 +84,7 @@ export default {
       resultItems: [],
       abv: '',
       ibu: '',
+      ebc: '',
       sumFilters: '',
       name: '',
       noList: 0,
@@ -95,7 +106,7 @@ export default {
   },
   methods: {
     getSumFilters() {
-      this.sumFilters = `${this.abv}&${this.ibu}`
+      this.sumFilters = `${this.abv}&${this.ibu}&${this.ebc}`
     },
     applyFilters() {
       this.getSumFilters()
@@ -109,7 +120,12 @@ export default {
       )
     },
     resetAll() {
-      ;(this.sumFilters = ''), (this.abv = ''), (this.name = ''), (this.singleBeer = '')
+      ;(this.sumFilters = ''),
+        (this.abv = ''),
+        (this.ibu = ''),
+        (this.ebc = ''),
+        (this.name = ''),
+        (this.singleBeer = '')
       this.applyFilters()
       this.noList = 0
     },
@@ -208,6 +224,10 @@ section.beers {
             color: #333;
             border-color: #bbb;
           }
+        }
+        .ebc {
+          display: grid;
+          grid: auto / 1fr 1fr;
         }
       }
       .btn-cta {
