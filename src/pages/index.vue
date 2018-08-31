@@ -1,6 +1,18 @@
 <template>
   <div>
-
+    <div class="pagination">
+      <div class="wrap">
+        <div class="nav">
+          <div @click="changePage(prevPage)" class="prev">
+            <div class="arrow left"></div> Previous page
+          </div>
+          <div class="current-page">{{currentPage}}</div>
+          <div @click="changePage(nextPage)" class="next">Next page
+            <div class="arrow right"></div>
+          </div>
+        </div>
+      </div>
+    </div>
     <section class="beers">
       <div class="wrap">
         <aside>
@@ -11,7 +23,7 @@
             <p class="small">or apply some filters</p>
           </form>
           <h4>Filters:</h4>
-          <form @submit.prevent="getSumFilters" class="filters">
+          <form @submit.prevent="applyFilters" class="filters">
             <div class="field">ABV greater than
               <input v-model="abvGtFilter" type="text">
             </div>
@@ -20,8 +32,7 @@
             </div>
             <custom-button>Apply</custom-button>
             <div class="tar">
-              <a @click="resetAll" class="link">Reset all</a>
-              <custom-link type="button" @click="resetAll">Reset All</custom-link>
+              <custom-link type="button" @click.native="resetAll">Reset All</custom-link>
             </div>
           </form>
         </aside>
@@ -33,24 +44,12 @@
             <h3>{{i.name}}</h3>
             <p>{{i.tagline}}</p>
             <p>{{i.description}}</p>
-            <router-link :to="`/${i.id}`">Learn more</router-link>
+            <router-link :to="`/beers/${i.id}`">Learn more</router-link>
           </div>
         </div>
       </div>
     </section>
-    <div class="pagination">
-      <div class="wrap">
-        <div class="nav">
-          <div @click="changePage(-1)" class="prev">
-            <div class="arrow left"></div> Previous page
-          </div>
-          <div class="current-page">{{currPage}}</div>
-          <div @click="changePage(1)" class="next">Next page
-            <div class="arrow right"></div>
-          </div>
-        </div>
-      </div>
-    </div>
+
   </div>
 </template>
 
@@ -60,7 +59,6 @@ export default {
   // components: { customButton },
   data() {
     return {
-      def: 'test',
       resultItems: [],
       abvGtFilter: '',
       abvLtFilter: '',
@@ -68,7 +66,8 @@ export default {
       name: '',
       noList: 0,
       singleBeer: {},
-      currPage: 1
+      currentPage: 1,
+      totalPages: 0
     }
   },
   created() {
@@ -93,9 +92,9 @@ export default {
       if (this.abvLtFilter) {
         this.sumFilters += `&abv_lt=${this.abvLtFilter}`
       }
-      this.applyFilters()
     },
     applyFilters() {
+      this.getSumFilters()
       this.$http.get(`https://api.punkapi.com/v2/beers?${this.sumFilters}`).then(
         resp => {
           this.resultItems = resp.data
@@ -106,7 +105,6 @@ export default {
       )
     },
     resetAll() {
-      console.log('test')
       ;(this.sumFilters = ''),
         (this.abvGtFilter = ''),
         (this.abvLtFilter = ''),
@@ -135,21 +133,32 @@ export default {
         }
       )
     },
-    changePage(dir) {
-      if (this.currPage === 1 && dir === -1) return
+    // Pagination methods
+    changePage(page) {
+      if (this.currentPage === 1 && page === this.prevPage) return
 
-      let nextPage = this.currPage + dir
-      this.$http.get(`https://api.punkapi.com/v2/beers?${this.sumFilters}&page=${nextPage}`).then(
+      this.$http.get(`https://api.punkapi.com/v2/beers?${this.sumFilters}&page=${page}`).then(
         resp => {
           if (resp.data.length === 0) return
           this.resultItems = resp.data
-          this.currPage = nextPage
+          this.currentPage = page
         },
         err => {
           console.error(err)
         }
       )
     }
+  },
+  computed: {
+    nextPage: function() {
+      return this.currentPage + 1
+    },
+    prevPage: function() {
+      return this.currentPage - 1
+    }
+    // totalPages: function() {
+    //   return (this.totalPages = )
+    // }
   }
 }
 </script>

@@ -25,6 +25,7 @@ export default {
   },
   created() {
     this.loading = 1
+    console.log(this.$route)
     this.$http
       .get(`https://api.punkapi.com/v2/beers/${this.$route.params.id}`)
       .then(resp => (this.beer = resp.data[0]), err => console.error(err))

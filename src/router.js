@@ -26,6 +26,9 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     route('/', 'index'),
-    route('/:id', 'single-beer')
+    route('/beers', 'base-default', {}, [
+      route(':id', 'single-beer')
+    ]),
+    route('/cart', 'cart')
   ]
 })
