@@ -18,17 +18,22 @@
         <aside>
           <h4>Search your beer:</h4>
           <form @submit.prevent="searchBeer" class="search">
-            <input v-model="name" required="required" type="text">
+            <input v-model="name" required="required" placeholder="My favourite beer" type="text">
             <custom-button>Go!</custom-button>
             <p class="small">or apply some filters</p>
           </form>
           <h4>Filters:</h4>
           <form @submit.prevent="applyFilters" class="filters">
-            <div class="field">ABV greater than
-              <input v-model="abvGtFilter" type="text">
-            </div>
-            <div class="field">ABV less than
-              <input v-model="abvLtFilter" type="text">
+            <div class="form-field">
+              <select v-model="abv">
+                <option disabled value="">Alcohol by volume</option>
+                <option value="abv_lt=4">Very low alcoholic</option>
+                <option value="abv_gt=4&abv_lt=10">Low alcoholic</option>
+                <option value="abv_gt=10&abv_lt=20">Medium alcoholic</option>
+                <option value="abv_gt=20&abv_lt=35">High alcoholic</option>
+                <option value="abv_gt=35">Blowing your mind</option>
+              </select>
+
             </div>
             <custom-button>Apply</custom-button>
             <div class="tar">
@@ -60,6 +65,7 @@ export default {
   data() {
     return {
       resultItems: [],
+      abv: '',
       abvGtFilter: '',
       abvLtFilter: '',
       sumFilters: '',
@@ -83,15 +89,7 @@ export default {
   },
   methods: {
     getSumFilters() {
-      if (this.sumFilters) {
-        this.sumFilters = ''
-      }
-      if (this.abvGtFilter) {
-        this.sumFilters += `abv_gt=${this.abvGtFilter}`
-      }
-      if (this.abvLtFilter) {
-        this.sumFilters += `&abv_lt=${this.abvLtFilter}`
-      }
+      this.sumFilters = `${this.abv}`
     },
     applyFilters() {
       this.getSumFilters()
@@ -105,11 +103,7 @@ export default {
       )
     },
     resetAll() {
-      ;(this.sumFilters = ''),
-        (this.abvGtFilter = ''),
-        (this.abvLtFilter = ''),
-        (this.name = ''),
-        (this.singleBeer = '')
+      ;(this.sumFilters = ''), (this.abv = ''), (this.name = ''), (this.singleBeer = '')
       this.applyFilters()
       this.noList = 0
     },
@@ -193,12 +187,14 @@ section.beers {
       }
     }
     .filters {
-      .field {
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: space-between;
-        input {
-          width: 35px;
+      .form-field {
+        margin-bottom: 24px;
+        select {
+          width: 100%;
+          height: 28px;
+          font-size: 14px;
+          border: 1px solid #ccc;
+          color: #333;
         }
       }
       .btn-cta {
