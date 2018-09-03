@@ -51,6 +51,15 @@
                   <label for="two">Dark beer</label>
                 </div>
               </div>
+              <select v-model="dateOfBrew" :class="{active:dateOfBrew!==''}">
+                <option disabled value="">Date of brew</option>
+                <option value="brewed_after=01-2005&brewed_before=12-2007">2005 - 2007</option>
+                <option value="brewed_after=01-2007&brewed_before=12-2009">2007 - 2009</option>
+                <option value="brewed_after=01-2009&brewed_before=12-2011">2009 - 2011</option>
+                <option value="brewed_after=01-2011&brewed_before=12-2013">2011 - 2013</option>
+                <option value="brewed_after=01-2013&brewed_before=12-2015">2013 - 2015</option>
+
+              </select>
             </div>
             <custom-button>Apply</custom-button>
             <div class="tar">
@@ -85,6 +94,7 @@ export default {
       abv: '',
       ibu: '',
       ebc: '',
+      dateOfBrew: '',
       sumFilters: '',
       name: '',
       noList: 0,
@@ -106,7 +116,7 @@ export default {
   },
   methods: {
     getSumFilters() {
-      this.sumFilters = `${this.abv}&${this.ibu}&${this.ebc}`
+      this.sumFilters = `${this.abv}&${this.ibu}&${this.ebc}&${this.dateOfBrew}`
     },
     applyFilters() {
       this.getSumFilters()
@@ -124,6 +134,7 @@ export default {
         (this.abv = ''),
         (this.ibu = ''),
         (this.ebc = ''),
+        (this.dateOfBrew = ''),
         (this.name = ''),
         (this.singleBeer = '')
       this.applyFilters()
@@ -186,6 +197,8 @@ section.beers {
   min-height: calc(100vh - 151px);
   aside {
     width: 270px;
+    max-height: 450px;
+    overflow: auto;
     padding: 20px 30px;
     background-color: $grey;
     border: 1px solid #ccc;
@@ -223,6 +236,9 @@ section.beers {
           &.active {
             color: #333;
             border-color: #bbb;
+          }
+          option {
+            color: #333;
           }
         }
         .ebc {
