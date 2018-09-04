@@ -100,15 +100,11 @@ export default {
         ebc: '',
         dateOfBrew: '',
         hops: '',
-        // hopsNew: '',
         malt: '',
-        // maltNew: '',
         food: '',
-        // foodNew: '',
-        sumFilters: '',
         name: ''
-        // nameNew: ''
       },
+      sumFilters: '',
       noList: 0,
       singleBeer: {},
       currentPage: 1,
@@ -128,53 +124,53 @@ export default {
   },
   methods: {
     getSumFilters() {
-      // this.getNewString('hops')
-      // this.getNewString('malt')
-      // this.getNewString('food')
-      this.filters.sumFilters = `${this.filters.abv}&${this.filters.ibu}&${this.filters.ebc}&${
-        this.filters.dateOfBrew
-      }&${this.filters.hops}&${this.filters.malt}&${this.filters.food}`
-    },
-    getNewString(el) {
-      let arr = this.filters[`${el}`].split(' ')
-      this.filters[`${el}New`] = arr.join('_')
+      this.sumFilters = ''
+      for (let key in this.filters) {
+        if (this.filters[key] !== '') {
+          if (key === 'hops' || key === 'malt' || key === 'food') {
+            this.sumFilters += `&${key}=${this.filters[key]}`
+          } else {
+            this.sumFilters += `&${this.filters[key]}`
+          }
+        }
+      }
     },
     applyFilters() {
       this.getSumFilters()
-      this.$http.get(`https://api.punkapi.com/v2/beers?${this.filters.sumFilters}`).then(
+      this.$http.get(`https://api.punkapi.com/v2/beers?${this.sumFilters}`).then(
         resp => {
-          this.resultItems = resp.data
           console.log(resp)
+          if (resp.data.length) {
+            this.resultItems = resp.data
+            this.noList = 0
+          } else {
+            this.noList = 1
+          }
         },
         err => {
           console.error(err)
         }
       )
     },
+    checkFiltersExist() {},
     resetAll() {
-      ;(this.filters.sumFilters = ''),
+      ;(this.sumFilters = ''),
         (this.filters.abv = ''),
         (this.filters.ibu = ''),
         (this.filters.ebc = ''),
         (this.filters.dateOfBrew = ''),
         (this.filters.hops = ''),
-        // (this.filters.hopsNew = ''),
         (this.filters.malt = ''),
-        // (this.filters.maltNew = ''),
         (this.filters.food = ''),
-        // (this.filters.foodNew = ''),
         (this.filters.name = ''),
-        // (this.filters.nameNew = ''),
         (this.filters.singleBeer = '')
       this.applyFilters()
       this.noList = 0
     },
     searchBeer() {
       this.filters.sumFilters = ''
-      // need to clear all with no refresh
       // let arr = this.name.split(' ')
       // let names = arr.join('_')
-      // this.getNewString('name')
       this.$http.get(`https://api.punkapi.com/v2/beers?beer_name=${this.filters.name}`).then(
         resp => {
           console.log(resp)
@@ -194,7 +190,7 @@ export default {
     changePage(page) {
       if (this.currentPage === 1 && page === this.prevPage) return
 
-      this.$http.get(`https://api.punkapi.com/v2/beers?${this.filters.sumFilters}&page=${page}`).then(
+      this.$http.get(`https://api.punkapi.com/v2/beers?${this.sumFilters}&page=${page}`).then(
         resp => {
           if (resp.data.length === 0) return
           this.resultItems = resp.data
