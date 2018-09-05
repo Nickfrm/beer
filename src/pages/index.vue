@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <loading-overlay v-if="loading"></loading-overlay>
+  <div v-else>
     <section class="beers">
       <div class="wrap">
         <aside id="sidebar">
@@ -68,7 +69,8 @@
               <router-link :to="`/beers/${i.id}`">Learn more</router-link>
             </div>
           </div>
-          <custom-button v-if="!noList && isNextPageExist" @click.native="loadMore" class="light">Load more...</custom-button>
+          <custom-button v-if="!noList && isNextPageExist && inlineLoading===0" @click.native="loadMore" class="light">Load more...</custom-button>
+          <inlineLoading v-if="inlineLoading===1"></inlineLoading>
         </div>
       </div>
     </section>
@@ -76,9 +78,9 @@
 </template>
 
 <script>
-// import customButton from '@/components/button'
+import inlineLoading from '@/components/inline-loading'
 export default {
-  // components: { customButton },
+  components: { inlineLoading },
   data() {
     return {
       resultItems: [],
@@ -96,24 +98,32 @@ export default {
       noList: false,
       singleBeer: {},
       currentPage: 1,
-      isNextPageExist: true
+      isNextPageExist: true,
+      loading: 0,
+      inlineLoading: 0
     }
   },
-  mounted() {
+  updated() {
     if (window.innerHeight < 750) {
       document.getElementById('sidebar').style.bottom = '25px'
     }
   },
   created() {
-    this.$http.get('https://api.punkapi.com/v2/beers?per_page=24').then(
-      resp => {
-        console.log(resp)
-        this.resultItems = resp.data
-      },
-      err => {
-        console.error(err)
-      }
-    )
+    this.loading = 1
+    this.$http
+      .get('https://api.punkapi.com/v2/beers?per_page=24')
+      .then(
+        resp => {
+          console.log(resp)
+          this.resultItems = resp.data
+        },
+        err => {
+          console.error(err)
+        }
+      )
+      .finally(() => {
+        this.loading = 0
+      })
   },
   methods: {
     getSumFilters() {
@@ -130,23 +140,29 @@ export default {
     },
     applyFilters() {
       this.getSumFilters()
-      this.$http.get(`https://api.punkapi.com/v2/beers?${this.sumFilters}`).then(
-        resp => {
-          console.log(resp)
-          if (resp.data.length) {
-            this.resultItems = resp.data
-            this.noList = false
-            if (resp.data.length < 23) {
-              this.isNextPageExist = false
+      this.loading = 1
+      this.$http
+        .get(`https://api.punkapi.com/v2/beers?${this.sumFilters}`)
+        .then(
+          resp => {
+            console.log(resp)
+            if (resp.data.length) {
+              this.resultItems = resp.data
+              this.noList = false
+              if (resp.data.length < 23) {
+                this.isNextPageExist = false
+              }
+            } else {
+              this.noList = true
             }
-          } else {
-            this.noList = true
+          },
+          err => {
+            console.error(err)
           }
-        },
-        err => {
-          console.error(err)
-        }
-      )
+        )
+        .finally(() => {
+          this.loading = 0
+        })
     },
     resetAll() {
       ;(this.sumFilters = ''),
@@ -166,38 +182,50 @@ export default {
       this.filters.sumFilters = ''
       // let arr = this.name.split(' ')
       // let names = arr.join('_')
-      this.$http.get(`https://api.punkapi.com/v2/beers?beer_name=${this.filters.name}`).then(
-        resp => {
-          console.log(resp)
-          if (resp.data.length) {
-            this.resultItems = resp.data
-            this.noList = false
-            if (resp.data.length < 23) {
-              this.isNextPageExist = false
-            }
-          } else {
-            this.noList = true
-          }
-        },
-        err => {
-          console.error(err)
-        }
-      )
-    },
-    loadMore() {
-      this.currentPage += 1
-      if (this.filters.name === '') {
-        this.$http.get(`https://api.punkapi.com/v2/beers?per_page=24&page=${this.currentPage}&${this.sumFilters}`).then(
+      this.loading = 1
+      this.$http
+        .get(`https://api.punkapi.com/v2/beers?beer_name=${this.filters.name}`)
+        .then(
           resp => {
-            this.resultItems.push(...resp.data)
-            if (resp.data.length < 23) {
-              this.isNextPageExist = false
+            console.log(resp)
+            if (resp.data.length) {
+              this.resultItems = resp.data
+              this.noList = false
+              if (resp.data.length < 23) {
+                this.isNextPageExist = false
+              }
+            } else {
+              this.noList = true
             }
           },
           err => {
             console.error(err)
           }
         )
+        .finally(() => {
+          this.loading = 0
+        })
+    },
+    loadMore() {
+      this.currentPage += 1
+      this.inlineLoading = 1
+      if (this.filters.name === '') {
+        this.$http
+          .get(`https://api.punkapi.com/v2/beers?per_page=24&page=${this.currentPage}&${this.sumFilters}`)
+          .then(
+            resp => {
+              this.resultItems.push(...resp.data)
+              if (resp.data.length < 23) {
+                this.isNextPageExist = false
+              }
+            },
+            err => {
+              console.error(err)
+            }
+          )
+          .finally(() => {
+            this.inlineLoading = 0
+          })
       } else {
         this.$http
           .get(`https://api.punkapi.com/v2/beers?per_page=24&page=${this.currentPage}&beer_name=${this.filters.name}`)
@@ -212,6 +240,9 @@ export default {
               console.error(err)
             }
           )
+          .finally(() => {
+            this.inlineLoading = 0
+          })
       }
     }
   },

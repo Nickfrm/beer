@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loading" class="loader">LOADING</div>
+  <loading-overlay v-if="loading"></loading-overlay>
   <div v-else class="single-beer">
     <div>
       <h2>{{beer.name}}</h2>
