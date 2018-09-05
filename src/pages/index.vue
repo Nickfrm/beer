@@ -2,7 +2,7 @@
   <div>
     <section class="beers">
       <div class="wrap">
-        <aside>
+        <aside id="sidebar">
           <h4>Search your beer:</h4>
           <form @submit.prevent="searchBeer" class="search">
             <input v-model="filters.name" required="required" placeholder="My favourite beer" type="text">
@@ -97,6 +97,11 @@ export default {
       singleBeer: {},
       currentPage: 1,
       isNextPageExist: true
+    }
+  },
+  mounted() {
+    if (window.innerHeight < 750) {
+      document.getElementById('sidebar').style.bottom = '25px'
     }
   },
   created() {
@@ -221,7 +226,7 @@ section.beers {
   min-height: calc(100vh - 151px);
   aside {
     width: 270px;
-    max-height: 450px;
+    // max-height: 450px;
     overflow: auto;
     padding: 20px 30px;
     background-color: $grey;
