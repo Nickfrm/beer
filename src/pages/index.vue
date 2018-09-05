@@ -355,7 +355,9 @@ section.beers {
     }
     .btn-cta.light {
       width: 100%;
-      margin-top: 30px;
+      margin-top: 24px;
+      height: 32px;
+      line-height: 32px;
     }
     .error-msg {
       font-size: 22px;

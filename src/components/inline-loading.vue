@@ -11,15 +11,16 @@ export default {}
 </script>
 
 <style lang="scss" scoped>
+@import '~styles/variables';
 .spinner {
-  margin: 34px auto 0;
+  margin: 32px auto 0;
   text-align: center;
 }
 .spinner > div {
   width: 16px;
   height: 16px;
   margin: 2px;
-  background-color: #333;
+  background-color: $l-main;
 
   border-radius: 100%;
   display: inline-block;
