@@ -274,6 +274,12 @@ section.beers {
         .ebc {
           display: grid;
           grid: auto / 1fr 1fr;
+          font-size: 14px;
+          align-items: center;
+          color: #333;
+          div {
+            display: flex;
+          }
         }
       }
       .btn-cta {
@@ -321,38 +327,6 @@ section.beers {
     }
   }
 }
-// .pagination {
-//   .nav {
-//     height: 50px;
-//     display: flex;
-//     justify-content: space-around;
-//     align-items: center;
-//     margin-left: 360px;
-//     border-top: 1px solid #ccc;
-//     .prev,
-//     .next {
-//       cursor: pointer;
-//       .arrow {
-//         width: 0;
-//         height: 0;
-//         border-top: 6px solid transparent;
-//         border-bottom: 6px solid transparent;
-//         display: inline-block;
-//         &.right {
-//           border-left: 6px solid #000;
-//           margin-left: 8px;
-//         }
-//         &.left {
-//           border-right: 6px solid #000;
-//           margin-right: 8px;
-//         }
-//       }
-//     }
-//     .current-page {
-//       font-size: 18px;
-//     }
-//   }
-// }
 
 .tar {
   text-align: right;
