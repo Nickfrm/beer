@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <section class="beers">
       <div class="wrap">
         <aside>
@@ -58,21 +57,10 @@
           </form>
         </aside>
         <div class="main">
-          <div class="pagination">
-            <div class="nav">
-              <div @click="changePage(prevPage)" class="prev">
-                <div class="arrow left"></div> Previous page
-              </div>
-              <div class="current-page">{{currentPage}}</div>
-              <div @click="changePage(nextPage)" class="next">Next page
-                <div class="arrow right"></div>
-              </div>
-            </div>
-          </div>
-          <div v-if="noList===1" class="error-msg">
+          <div v-if="noList" class="error-msg">
             Sorry! We have no results from your search. <br> Please change your request and try again.
           </div>
-          <div v-if="noList===0 " class="list ">
+          <div v-if="!noList" class="list ">
             <div v-for="i in resultItems " :key="i.id " class="card ">
               <h3>{{i.name}}</h3>
               <p>{{i.tagline}}</p>
@@ -80,8 +68,8 @@
               <router-link :to="`/beers/${i.id}`">Learn more</router-link>
             </div>
           </div>
+          <custom-button v-if="!noList && isNextPageExist" @click.native="loadMore" class="light">Load more...</custom-button>
         </div>
-
       </div>
     </section>
   </div>
@@ -105,10 +93,10 @@ export default {
         name: ''
       },
       sumFilters: '',
-      noList: 0,
+      noList: false,
       singleBeer: {},
       currentPage: 1,
-      totalPages: 0
+      isNextPageExist: true
     }
   },
   created() {
@@ -142,9 +130,12 @@ export default {
           console.log(resp)
           if (resp.data.length) {
             this.resultItems = resp.data
-            this.noList = 0
+            this.noList = false
+            if (resp.data.length < 23) {
+              this.isNextPageExist = false
+            }
           } else {
-            this.noList = 1
+            this.noList = true
           }
         },
         err => {
@@ -152,7 +143,6 @@ export default {
         }
       )
     },
-    checkFiltersExist() {},
     resetAll() {
       ;(this.sumFilters = ''),
         (this.filters.abv = ''),
@@ -165,7 +155,7 @@ export default {
         (this.filters.name = ''),
         (this.filters.singleBeer = '')
       this.applyFilters()
-      this.noList = 0
+      this.noList = false
     },
     searchBeer() {
       this.filters.sumFilters = ''
@@ -176,9 +166,12 @@ export default {
           console.log(resp)
           if (resp.data.length) {
             this.resultItems = resp.data
-            this.noList = 0
+            this.noList = false
+            if (resp.data.length < 23) {
+              this.isNextPageExist = false
+            }
           } else {
-            this.noList = 1
+            this.noList = true
           }
         },
         err => {
@@ -186,33 +179,38 @@ export default {
         }
       )
     },
-    // Pagination methods
-    changePage(page) {
-      if (this.currentPage === 1 && page === this.prevPage) return
-
-      this.$http.get(`https://api.punkapi.com/v2/beers?${this.sumFilters}&page=${page}`).then(
-        resp => {
-          if (resp.data.length === 0) return
-          this.resultItems = resp.data
-          this.currentPage = page
-        },
-        err => {
-          console.error(err)
-        }
-      )
+    loadMore() {
+      this.currentPage += 1
+      if (this.filters.name === '') {
+        this.$http.get(`https://api.punkapi.com/v2/beers?per_page=24&page=${this.currentPage}&${this.sumFilters}`).then(
+          resp => {
+            this.resultItems.push(...resp.data)
+            if (resp.data.length < 23) {
+              this.isNextPageExist = false
+            }
+          },
+          err => {
+            console.error(err)
+          }
+        )
+      } else {
+        this.$http
+          .get(`https://api.punkapi.com/v2/beers?per_page=24&page=${this.currentPage}&beer_name=${this.filters.name}`)
+          .then(
+            resp => {
+              this.resultItems.push(...resp.data)
+              if (resp.data.length < 23) {
+                this.isNextPageExist = false
+              }
+            },
+            err => {
+              console.error(err)
+            }
+          )
+      }
     }
   },
-  computed: {
-    nextPage: function() {
-      return this.currentPage + 1
-    },
-    prevPage: function() {
-      return this.currentPage - 1
-    }
-    // totalPages: function() {
-    //   return (this.totalPages = )
-    // }
-  }
+  computed: {}
 }
 </script>
 
@@ -287,74 +285,74 @@ section.beers {
       }
     }
   }
-  .list {
-    display: grid;
-    grid: 250px / repeat(3, 1fr);
-    gap: 15px;
+  .main {
     margin-left: 360px;
-    .card {
-      background: #f7f7f7;
-      border: 1px solid #ccc;
-      padding: 20px;
-      font-size: 15px;
-      h3 {
-        margin-top: 0;
-        overflow: hidden;
-        max-width: 140px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-      p {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 4;
-        -webkit-box-orient: vertical;
-      }
-      a {
-        font-weight: 700;
-        color: #333;
-        cursor: pointer;
-      }
-    }
-  }
-  .error-msg {
-    margin-left: 360px;
-    font-size: 22px;
-    text-align: center;
-  }
-}
-.pagination {
-  .nav {
-    height: 50px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-left: 360px;
-    border-top: 1px solid #ccc;
-    .prev,
-    .next {
-      cursor: pointer;
-      .arrow {
-        width: 0;
-        height: 0;
-        border-top: 6px solid transparent;
-        border-bottom: 6px solid transparent;
-        display: inline-block;
-        &.right {
-          border-left: 6px solid #000;
-          margin-left: 8px;
+    .list {
+      display: grid;
+      grid: 250px / repeat(3, 1fr);
+      gap: 15px;
+      .card {
+        background: #f7f7f7;
+        border: 1px solid #ccc;
+        padding: 20px;
+        font-size: 15px;
+        h3 {
+          margin-top: 0;
+          overflow: hidden;
+          max-width: 140px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
-        &.left {
-          border-right: 6px solid #000;
-          margin-right: 8px;
+        p {
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
         }
       }
     }
-    .current-page {
-      font-size: 18px;
+    .btn-cta.light {
+      width: 100%;
+      margin-top: 30px;
+    }
+    .error-msg {
+      font-size: 22px;
+      text-align: center;
     }
   }
 }
+// .pagination {
+//   .nav {
+//     height: 50px;
+//     display: flex;
+//     justify-content: space-around;
+//     align-items: center;
+//     margin-left: 360px;
+//     border-top: 1px solid #ccc;
+//     .prev,
+//     .next {
+//       cursor: pointer;
+//       .arrow {
+//         width: 0;
+//         height: 0;
+//         border-top: 6px solid transparent;
+//         border-bottom: 6px solid transparent;
+//         display: inline-block;
+//         &.right {
+//           border-left: 6px solid #000;
+//           margin-left: 8px;
+//         }
+//         &.left {
+//           border-right: 6px solid #000;
+//           margin-right: 8px;
+//         }
+//       }
+//     }
+//     .current-page {
+//       font-size: 18px;
+//     }
+//   }
+// }
 
 .tar {
   text-align: right;

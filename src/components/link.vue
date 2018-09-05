@@ -20,7 +20,8 @@ export default {
   border: none;
   font-size: 14px;
   display: inline;
-  transition: 0.3s ease;
+  transition: all 0.3s ease;
+  text-decoration: none;
   cursor: pointer;
   padding: 0;
   &:hover {

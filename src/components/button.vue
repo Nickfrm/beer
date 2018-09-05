@@ -35,5 +35,14 @@ export default {
     background-color: $main;
     border-color: $main;
   }
+  &.light {
+    color: #858585;
+    background-color: $grey;
+    border-color: #ccc;
+    &:hover {
+      background-color: $l-grey;
+      color: #444;
+    }
+  }
 }
 </style>
