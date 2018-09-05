@@ -13,7 +13,7 @@ export default {}
 <style lang="scss" scoped>
 @import '~styles/variables';
 .spinner {
-  margin: 32px auto 0;
+  margin: 16px auto 0;
   text-align: center;
 }
 .spinner > div {

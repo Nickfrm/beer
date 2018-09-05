@@ -8,11 +8,11 @@ import customButton from '@/components/button'
 import customLink from '@/components/link'
 import loadingOverlay from '@/components/loading-overlay'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSpinner, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import { faSpinner, faShoppingCart, faMoneyBillAlt, faCreditCard } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faSpinner, faShoppingCart)
+library.add(faSpinner, faShoppingCart, faMoneyBillAlt, faCreditCard)
 
 Vue.use(VueAxios, axios)
 

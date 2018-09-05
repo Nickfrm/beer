@@ -4,13 +4,13 @@
     <section class="beers">
       <div class="wrap">
         <aside id="sidebar">
-          <h4>Search your beer:</h4>
+          <h5>Search your beer:</h5>
           <form @submit.prevent="searchBeer" class="search">
             <input v-model="filters.name" required="required" placeholder="My favourite beer" type="text">
             <custom-button>Go!</custom-button>
             <p class="small">or apply some filters</p>
           </form>
-          <h4>Filters:</h4>
+          <h5>Filters:</h5>
           <form @submit.prevent="applyFilters" class="filters">
             <div class="form-field">
               <select v-model="filters.abv" :class="{active:filters.abv!==''}">
@@ -63,14 +63,20 @@
           </div>
           <div v-if="!noList" class="list ">
             <div v-for="i in resultItems " :key="i.id " class="card ">
-              <h3>{{i.name}}</h3>
-              <p>{{i.tagline}}</p>
-              <p>{{i.description}}</p>
-              <router-link :to="`/beers/${i.id}`">Learn more</router-link>
+              <div class="content">
+                <h4>{{i.name}}</h4>
+                <b>{{i.tagline}}</b>
+                <p>{{i.description}}</p>
+                <router-link :to="`/beers/${i.id}`">Learn more...</router-link>
+              </div>
+              <img :src="`${i.image_url}`" alt=" ">
+              <custom-button>Add to cart
+                <font-awesome-icon icon="credit-card" />
+              </custom-button>
             </div>
+            <custom-button v-if="!noList && isNextPageExist && inlineLoading===0" @click.native="loadMore" class="light">Load more...</custom-button>
+            <inlineLoading v-if="inlineLoading===1"></inlineLoading>
           </div>
-          <custom-button v-if="!noList && isNextPageExist && inlineLoading===0" @click.native="loadMore" class="light">Load more...</custom-button>
-          <inlineLoading v-if="inlineLoading===1"></inlineLoading>
         </div>
       </div>
     </section>
@@ -115,6 +121,14 @@ export default {
       .then(
         resp => {
           console.log(resp)
+          // truncation of description
+          for (let key in resp.data) {
+            if (resp.data[key].name.length < 15) {
+              resp.data[key].description = `${resp.data[key].description.substring(0, 100)}...`
+            } else {
+              resp.data[key].description = `${resp.data[key].description.substring(0, 50)}...`
+            }
+          }
           this.resultItems = resp.data
         },
         err => {
@@ -146,6 +160,13 @@ export default {
         .then(
           resp => {
             console.log(resp)
+            for (let key in resp.data) {
+              if (resp.data[key].name.length < 15) {
+                resp.data[key].description = `${resp.data[key].description.substring(0, 100)}...`
+              } else {
+                resp.data[key].description = `${resp.data[key].description.substring(0, 50)}...`
+              }
+            }
             if (resp.data.length) {
               this.resultItems = resp.data
               this.noList = false
@@ -188,6 +209,13 @@ export default {
         .then(
           resp => {
             console.log(resp)
+            for (let key in resp.data) {
+              if (resp.data[key].name.length < 15) {
+                resp.data[key].description = `${resp.data[key].description.substring(0, 100)}...`
+              } else {
+                resp.data[key].description = `${resp.data[key].description.substring(0, 50)}...`
+              }
+            }
             if (resp.data.length) {
               this.resultItems = resp.data
               this.noList = false
@@ -214,6 +242,13 @@ export default {
           .get(`https://api.punkapi.com/v2/beers?per_page=24&page=${this.currentPage}&${this.sumFilters}`)
           .then(
             resp => {
+              for (let key in resp.data) {
+                if (resp.data[key].name.length < 15) {
+                  resp.data[key].description = `${resp.data[key].description.substring(0, 100)}...`
+                } else {
+                  resp.data[key].description = `${resp.data[key].description.substring(0, 50)}...`
+                }
+              }
               this.resultItems.push(...resp.data)
               if (resp.data.length < 23) {
                 this.isNextPageExist = false
@@ -231,6 +266,13 @@ export default {
           .get(`https://api.punkapi.com/v2/beers?per_page=24&page=${this.currentPage}&beer_name=${this.filters.name}`)
           .then(
             resp => {
+              for (let key in resp.data) {
+                if (resp.data[key].name.length < 15) {
+                  resp.data[key].description = `${resp.data[key].description.substring(0, 100)}...`
+                } else {
+                  resp.data[key].description = `${resp.data[key].description.substring(0, 50)}...`
+                }
+              }
               this.resultItems.push(...resp.data)
               if (resp.data.length < 23) {
                 this.isNextPageExist = false
@@ -254,19 +296,16 @@ export default {
 @import '~styles/variables';
 section.beers {
   margin: 0 0 20px;
-  min-height: calc(100vh - 151px);
+  // min-height: calc(100vh - 151px);
   aside {
-    width: 270px;
+    width: 266px;
     // max-height: 450px;
     overflow: auto;
     padding: 20px 30px;
     background-color: $grey;
     border: 1px solid #ccc;
     position: fixed;
-    top: 76px;
-    h4 {
-      margin-top: 0;
-    }
+    top: 75px;
     .search {
       margin-bottom: 20px;
       display: grid;
@@ -328,36 +367,58 @@ section.beers {
     }
   }
   .main {
-    margin-left: 360px;
+    display: grid;
+    grid: 200px / 1fr 2fr;
+    gap: 32px;
     .list {
+      grid-column-start: 2;
       display: grid;
-      grid: 250px / repeat(3, 1fr);
-      gap: 15px;
+      grid: auto / repeat(2, 1fr);
+      gap: 16px;
       .card {
         background: #f7f7f7;
         border: 1px solid #ccc;
         padding: 20px;
         font-size: 15px;
-        h3 {
-          margin-top: 0;
-          overflow: hidden;
-          max-width: 140px;
-          white-space: nowrap;
-          text-overflow: ellipsis;
+        display: grid;
+        grid: 210px / 2fr 1fr;
+        gap: 16px;
+        justify-items: center;
+        img {
+          max-height: calc(100% - 38px);
+          max-width: 100%;
+          align-self: center;
         }
-        p {
-          overflow: hidden;
-          display: -webkit-box;
-          -webkit-line-clamp: 4;
-          -webkit-box-orient: vertical;
+        .content {
+          display: grid;
+          grid-template-rows: repeat(3, auto) 1fr;
+          a {
+            align-self: end;
+          }
+        }
+        .btn-cta {
+          width: 100%;
+          line-height: 26px;
+          grid-column: 1 / 3;
+          margin-top: 10px;
+          .fa-credit-card {
+            font-size: 16px;
+            margin-left: 5px;
+          }
         }
       }
     }
     .btn-cta.light {
       width: 100%;
-      margin-top: 24px;
+      margin-top: 8px;
       height: 32px;
       line-height: 32px;
+      grid-column: 1 / 3;
+      margin-bottom: 24px;
+    }
+    .spinner {
+      grid-column: 1 / 3;
+      margin-bottom: 24px;
     }
     .error-msg {
       font-size: 22px;
