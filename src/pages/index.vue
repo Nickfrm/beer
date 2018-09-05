@@ -142,7 +142,7 @@ export default {
       this.getSumFilters()
       this.loading = 1
       this.$http
-        .get(`https://api.punkapi.com/v2/beers?${this.sumFilters}`)
+        .get(`https://api.punkapi.com/v2/beers?per_page=24${this.sumFilters}`)
         .then(
           resp => {
             console.log(resp)
