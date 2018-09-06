@@ -186,16 +186,8 @@ export default {
         })
     },
     resetAll() {
-      ;(this.sumFilters = ''),
-        (this.filters.abv = ''),
-        (this.filters.ibu = ''),
-        (this.filters.ebc = ''),
-        (this.filters.dateOfBrew = ''),
-        (this.filters.hops = ''),
-        (this.filters.malt = ''),
-        (this.filters.food = ''),
-        (this.filters.name = ''),
-        (this.filters.singleBeer = '')
+      this.sumFilters = ''
+      Object.keys(this.filters).forEach(k => (this.filters[k] = ''))
       this.applyFilters()
       this.noList = false
     },
@@ -210,10 +202,11 @@ export default {
           resp => {
             console.log(resp)
             for (let key in resp.data) {
-              if (resp.data[key].name.length < 15) {
-                resp.data[key].description = `${resp.data[key].description.substring(0, 100)}...`
+              let el = resp.data[key]
+              if (el.name.length < 15) {
+                el.description = `${el.description.substring(0, 100)}...`
               } else {
-                resp.data[key].description = `${resp.data[key].description.substring(0, 50)}...`
+                el.description = `${el.description.substring(0, 50)}...`
               }
             }
             if (resp.data.length) {
@@ -243,10 +236,11 @@ export default {
           .then(
             resp => {
               for (let key in resp.data) {
-                if (resp.data[key].name.length < 15) {
-                  resp.data[key].description = `${resp.data[key].description.substring(0, 100)}...`
+                let el = el
+                if (el.name.length < 15) {
+                  el.description = `${el.description.substring(0, 100)}...`
                 } else {
-                  resp.data[key].description = `${resp.data[key].description.substring(0, 50)}...`
+                  el.description = `${el.description.substring(0, 50)}...`
                 }
               }
               this.resultItems.push(...resp.data)
@@ -267,10 +261,11 @@ export default {
           .then(
             resp => {
               for (let key in resp.data) {
-                if (resp.data[key].name.length < 15) {
-                  resp.data[key].description = `${resp.data[key].description.substring(0, 100)}...`
+                let el = resp.data[key]
+                if (el.name.length < 15) {
+                  el.description = `${el.description.substring(0, 100)}...`
                 } else {
-                  resp.data[key].description = `${resp.data[key].description.substring(0, 50)}...`
+                  el.description = `${el.description.substring(0, 50)}...`
                 }
               }
               this.resultItems.push(...resp.data)
