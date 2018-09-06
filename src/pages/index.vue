@@ -8,7 +8,6 @@
           <form @submit.prevent="searchBeer" class="search">
             <input v-model="filters.name" required="required" placeholder="My favourite beer" type="text">
             <custom-button>Go!</custom-button>
-            <p class="small">or apply some filters</p>
           </form>
           <h5>Filters:</h5>
           <form @submit.prevent="applyFilters" class="filters">
@@ -313,11 +312,6 @@ section.beers {
       display: grid;
       grid: auto / 2fr 1fr;
       grid-gap: 20px;
-
-      .small {
-        font-size: 13px;
-        color: #666;
-      }
     }
     input[type='text'] {
       height: 26px;
