@@ -25,7 +25,8 @@
         <custom-button>Add to cart
           <font-awesome-icon icon="credit-card" />
         </custom-button>
-        <custom-button class="light">Check your cart</custom-button>
+        <router-link class="btn-cta light" to="/cart">Check your cart</router-link>
+        <!-- <custom-button class="light">Check your cart</custom-button> -->
       </div>
       <img :src="`${beer.image_url}`" alt=" ">
     </div>
@@ -76,6 +77,9 @@ export default {
       }
       &.light {
         margin-left: 20px;
+        line-height: 36px;
+        text-align: center;
+        padding: 0;
       }
     }
     .grid {
