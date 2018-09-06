@@ -22,11 +22,10 @@
         <p>
           <b>{{beer.tagline}}</b>
         </p>
-        <custom-button>Add to cart
+        <custom-button @click.native="addToCart(beer.id)">Add to cart
           <font-awesome-icon icon="credit-card" />
         </custom-button>
         <router-link class="btn-cta light" to="/cart">Check your cart</router-link>
-        <!-- <custom-button class="light">Check your cart</custom-button> -->
       </div>
       <img :src="`${beer.image_url}`" alt=" ">
     </div>
@@ -49,6 +48,15 @@ export default {
       .finally(() => {
         this.loading = 0
       })
+  },
+  methods: {
+    addToCart(id) {
+      this.$store.commit({
+        type: 'addToCart',
+        id: id
+      })
+      console.log(this.$store.state.cart)
+    }
   }
 }
 </script>

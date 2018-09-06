@@ -70,7 +70,7 @@
                 <router-link :to="`/beers/${i.id}`">Learn more...</router-link>
               </div>
               <img :src="`${i.image_url}`" alt=" ">
-              <custom-button>Add to cart
+              <custom-button @click.native="addToCart(i.id)">Add to cart
                 <font-awesome-icon icon="credit-card" />
               </custom-button>
             </div>
@@ -236,7 +236,7 @@ export default {
           .then(
             resp => {
               for (let key in resp.data) {
-                let el = el
+                let el = resp.data[key]
                 if (el.name.length < 15) {
                   el.description = `${el.description.substring(0, 100)}...`
                 } else {
@@ -281,6 +281,13 @@ export default {
             this.inlineLoading = 0
           })
       }
+    },
+    addToCart(id) {
+      this.$store.commit({
+        type: 'addToCart',
+        id: id
+      })
+      console.log(this.$store.state.cart)
     }
   },
   computed: {}
