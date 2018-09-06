@@ -2,17 +2,33 @@
   <loading-overlay v-if="loading"></loading-overlay>
   <div v-else class="single-beer">
     <div class="wrap">
-      <h2>{{beer.name}}</h2>
-      <p>{{beer.description}}</p>
-      <p>ABV: {{beer.abv}}</p>
-      <!-- <p>Boil volume: {{beer.boil_volume.value}} {{beer.boil_volume.unit}}</p> -->
-      <p>EBC: {{beer.ebc}}</p>
-      <p>IBU: {{beer.ibu}}</p>
-      <p>
-        <b>{{beer.tagline}}</b>
-      </p>
+      <div>
+        <h2>{{beer.name}}</h2>
+        <p>{{beer.description}}</p>
+        <div class="grid">
+          <p>First brewed date: {{beer.first_brewed}}</p>
+          <p>Alcohol by volume: {{beer.abv}}</p>
+          <p>Boil volume: {{beer.boil_volume.value}} {{beer.boil_volume.unit}}</p>
+          <p>European Brewing Convention: {{beer.ebc}}</p>
+          <p>International Bittering Units: {{beer.ibu}}</p>
+          <p>Malt: {{beer.ingredients.malt[0].name}}, {{beer.ingredients.malt[0].amount.value}} {{beer.ingredients.malt[0].amount.unit}}</p>
+        </div>
+        <p>Yeast: {{beer.ingredients.yeast}}</p>
+
+        Perfect for:
+        <ul>
+          <li v-for="i in beer.food_pairing" :key="i">{{i}}</li>
+        </ul>
+        <p>
+          <b>{{beer.tagline}}</b>
+        </p>
+        <custom-button>Add to cart
+          <font-awesome-icon icon="credit-card" />
+        </custom-button>
+        <custom-button class="light">Check your cart</custom-button>
+      </div>
+      <img :src="`${beer.image_url}`" alt=" ">
     </div>
-    <img :src="`${beer.image_url}`" alt=" ">
   </div>
 </template>
 <script>
@@ -38,15 +54,38 @@ export default {
 <style lang="scss">
 @import '~styles/variables';
 .single-beer {
-  padding: 20px 30px;
-  background-color: $grey;
-  border: 1px solid #ccc;
-  display: grid;
-  grid: auto / 1fr 1fr;
-  gap: 20px;
-  justify-items: center;
-  img {
-    max-height: 350px;
+  .wrap {
+    padding: 30px;
+    background-color: $grey;
+    border: 1px solid #ccc;
+    display: grid;
+    grid: auto / 3fr 2fr;
+    gap: 20px;
+    justify-items: center;
+    img {
+      height: 450px;
+    }
+    .btn-cta {
+      width: 250px;
+      height: 36px;
+      margin-top: 20px;
+      display: inline-block;
+      .fa-credit-card {
+        font-size: 16px;
+        margin-left: 12px;
+      }
+      &.light {
+        margin-left: 20px;
+      }
+    }
+    .grid {
+      display: grid;
+      grid: auto / 1fr 1fr;
+      gap: 0 20px;
+      p {
+        margin-bottom: 0;
+      }
+    }
   }
 }
 </style>

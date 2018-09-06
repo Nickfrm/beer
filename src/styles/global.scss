@@ -29,6 +29,7 @@
  .wrap {
    max-width: 1000px;
    margin: 0 auto;
+   box-sizing: border-box;
  }
 
  body {
@@ -36,6 +37,7 @@
    padding-top: 24px;
    //  font-family: 'Montserrat', sans-serif;
    font-family: 'Raleway', sans-serif;
+   box-sizing: border-box;
  }
 
  p, {
