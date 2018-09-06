@@ -1,7 +1,7 @@
 <template>
   <loading-overlay v-if="loading"></loading-overlay>
   <div v-else class="single-beer">
-    <div>
+    <div class="wrap">
       <h2>{{beer.name}}</h2>
       <p>{{beer.description}}</p>
       <p>ABV: {{beer.abv}}</p>
@@ -38,7 +38,6 @@ export default {
 <style lang="scss">
 @import '~styles/variables';
 .single-beer {
-  margin-left: 360px;
   padding: 20px 30px;
   background-color: $grey;
   border: 1px solid #ccc;

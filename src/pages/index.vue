@@ -403,7 +403,7 @@ section.beers {
           margin-top: 10px;
           .fa-credit-card {
             font-size: 16px;
-            margin-left: 5px;
+            margin-left: 12px;
           }
         }
       }
