@@ -22,7 +22,7 @@
         <p>
           <b>{{beer.tagline}}</b>
         </p>
-        <custom-button @click.native="addToCart(beer.id)">Add to cart
+        <custom-button @click.native="addToCart(beer.id)" :disabled="checkIfAdded(beer.id)">Add to cart
           <font-awesome-icon icon="credit-card" />
         </custom-button>
         <router-link class="btn-cta light" to="/cart">Check your cart</router-link>
@@ -56,6 +56,9 @@ export default {
         id: id
       })
       console.log(this.$store.state.cart)
+    },
+    checkIfAdded(id) {
+      return this.$store.state.cart.includes(id)
     }
   }
 }

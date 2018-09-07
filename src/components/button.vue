@@ -44,5 +44,10 @@ export default {
       color: #444;
     }
   }
+  &:disabled {
+    color: #bbb;
+    background-color: #888;
+    border-color: #ccc;
+  }
 }
 </style>

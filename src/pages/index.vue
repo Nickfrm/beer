@@ -69,7 +69,7 @@
                 <router-link :to="`/beers/${i.id}`">Learn more...</router-link>
               </div>
               <img :src="`${i.image_url}`" alt=" ">
-              <custom-button @click.native="addToCart(i.id)">Add to cart
+              <custom-button @click.native="addToCart(i.id)" :disabled="checkIfAdded(i.id)">Add to cart
                 <font-awesome-icon icon="credit-card" />
               </custom-button>
             </div>
@@ -287,6 +287,9 @@ export default {
         id: id
       })
       console.log(this.$store.state.cart)
+    },
+    checkIfAdded(id) {
+      return this.$store.state.cart.includes(id)
     }
   },
   computed: {}
