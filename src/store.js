@@ -10,6 +10,9 @@ export default new Vuex.Store({
   mutations: {
     addToCart(state, payload) {
       state.cart.push(payload.id)
+    },
+    removeFromCart(state, payload) {
+      state.cart.splice(state.cart.indexOf(payload.id), 1)
     }
   },
   actions: {

@@ -286,7 +286,6 @@ export default {
         type: 'addToCart',
         id: id
       })
-      console.log(this.$store.state.cart)
     },
     checkIfAdded(id) {
       return this.$store.state.cart.includes(id)

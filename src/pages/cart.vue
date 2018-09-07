@@ -3,13 +3,14 @@
   <loading-overlay v-if="loading"></loading-overlay>
   <div v-else class="cart">
     <div class="wrap">
+      <div class="error" v-if="error || isCartEmpty">Ooops, your cart is empty</div>
       <div v-for="i in addedToCart" :key="i.id" class="item" v-if="i.id">
         <img :src="`${i.image_url}`" alt=" ">
         <h4>{{i.name}}</h4>
         <p>
           <b>{{i.tagline}}</b>
         </p>
-        <custom-button @click.native="removeFromCart(addedToCart[i].id)">Remove from cart</custom-button>
+        <custom-button @click.native="removeFromList(i, i.id)">Remove from cart</custom-button>
       </div>
     </div>
   </div>
@@ -19,7 +20,8 @@ export default {
   data() {
     return {
       addedToCart: [],
-      loading: 0
+      loading: 0,
+      error: false
     }
   },
   created() {
@@ -32,17 +34,39 @@ export default {
       .then(
         resp => {
           console.log(resp)
+          this.error = false
           this.addedToCart = resp.data
         },
         err => {
           console.error(err)
+          this.error = true
         }
       )
       .finally(() => {
         this.loading = 0
       })
   },
-  computed: {}
+  methods: {
+    removeFromList(el, id) {
+      this.removeFromCart(id)
+      this.addedToCart.splice(this.addedToCart.indexOf(el), 1)
+    },
+    removeFromCart(id) {
+      this.$store.commit({
+        type: 'removeFromCart',
+        id: id
+      })
+    }
+  },
+  computed: {
+    isCartEmpty: function() {
+      if (this.addedToCart.length === 0) {
+        return true
+      } else {
+        return false
+      }
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -68,6 +92,14 @@ export default {
     h4 {
       margin: 0;
     }
+  }
+  .error {
+    display: flex;
+    height: calc(100vh - 120px);
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 700;
   }
 }
 </style>
