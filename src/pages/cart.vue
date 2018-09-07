@@ -26,6 +26,7 @@ export default {
   },
   created() {
     this.loading = 1
+    this.checkExistingStorage()
     let ids = this.$store.state.cart.join('|')
     let length = this.$store.state.cart.length
     console.log(ids)
@@ -56,6 +57,9 @@ export default {
         type: 'removeFromCart',
         id: id
       })
+    },
+    checkExistingStorage() {
+      this.$store.commit('checkExistingStorage')
     }
   },
   computed: {

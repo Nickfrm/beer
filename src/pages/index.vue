@@ -135,6 +135,7 @@ export default {
         }
       )
       .finally(() => {
+        this.checkExistingStorage()
         this.loading = 0
       })
   },
@@ -289,6 +290,9 @@ export default {
     },
     checkIfAdded(id) {
       return this.$store.state.cart.includes(id)
+    },
+    checkExistingStorage() {
+      this.$store.commit('checkExistingStorage')
     }
   },
   computed: {}
@@ -301,8 +305,7 @@ section.beers {
   margin: 0 0 20px;
   // min-height: calc(100vh - 151px);
   aside {
-    width: 266px;
-    // max-height: 450px;
+    width: 338px;
     overflow: auto;
     padding: 20px 30px;
     background-color: $grey;
