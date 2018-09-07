@@ -6,7 +6,7 @@
       <div class="error" v-if="error || isCartEmpty">Ooops, your cart is empty</div>
       <div v-for="i in addedToCart" :key="i.id" class="item" v-if="i.id">
         <img :src="`${i.image_url}`" alt=" ">
-        <h4>{{i.name}}</h4>
+        <router-link :to="`/beers/${i.id}`" class="link">{{i.name}}</router-link>
         <p>
           <b>{{i.tagline}}</b>
         </p>
@@ -93,8 +93,10 @@ export default {
       height: 100%;
       justify-self: center;
     }
-    h4 {
+    .link {
       margin: 0;
+      color: #000;
+      font-size: 1.333em;
     }
   }
   .error {
