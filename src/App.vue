@@ -2,7 +2,18 @@
   <div id="app">
     <header>
       <div class="wrap">
-        <router-link to="/" class="logo" exact>Beers</router-link>
+        <div class="left-align">
+          <div class="bars">
+            <font-awesome-icon icon="bars" />
+          </div>
+          <router-link to="/" class="logo" exact>Beers</router-link>
+          <div class="search">
+            <input required="required" placeholder="My favourite beer" type="text">
+            <custom-button @click.native="getBeers">
+              <font-awesome-icon icon="search" />
+            </custom-button>
+          </div>
+        </div>
         <router-link to="/cart" class="cart">
           <div v-if="sumCart" class="circle">{{sumCart}}</div>
           <font-awesome-icon icon="shopping-cart" size="2x" />
