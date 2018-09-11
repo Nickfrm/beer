@@ -50,7 +50,7 @@
               </custom-button>
             </div>
             <custom-button v-if="isNextPageExist && !inlineLoading" @click.native="loadMore" class="light">Load more...</custom-button>
-            <inlineLoading v-if="inlineLoading" />
+            <inline-loading v-if="inlineLoading" />
           </div>
         </div>
       </div>
@@ -108,7 +108,9 @@ export default {
   methods: {
     getBeers() {
       this.setSumFilters()
-      this.$store.commit('loadingOn')
+      if (!this.inlineLoading) {
+        this.$store.commit('loadingOn')
+      }
       this.$http
         .get(`https://api.punkapi.com/v2/beers?per_page=24&page=${this.currentPage}${this.sumFilters}`)
         .then(
@@ -120,10 +122,17 @@ export default {
               el.description = `${el.description.substring(0, el.name.length < 15 ? 100 : 50)}...`
             }
             if (resp.data.length) {
-              this.beers = resp.data
-              this.noList = false
-              if (resp.data.length < 23) {
-                this.isNextPageExist = false
+              if (!this.inlineLoading) {
+                this.beers = resp.data
+                this.noList = false
+                if (resp.data.length < 23) {
+                  this.isNextPageExist = false
+                }
+              } else {
+                this.beers.push(...resp.data)
+                if (resp.data.length < 23) {
+                  this.isNextPageExist = false
+                }
               }
             } else {
               this.noList = true
@@ -134,6 +143,7 @@ export default {
           }
         )
         .finally(() => {
+          this.inlineLoading = 0
           this.$store.commit('loadingOff')
         })
     },

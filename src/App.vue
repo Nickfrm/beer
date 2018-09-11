@@ -9,6 +9,9 @@
       </div>
     </header>
     <router-view/>
+    <!-- <footer>
+      <div class="wrap">All right reserved. 2018</div>
+    </footer> -->
     <loading-overlay v-if="$store.state.loading"></loading-overlay>
   </div>
 </template>
