@@ -19,9 +19,9 @@
 
 <script>
 export default {
-  // created() {
-  //   // this.$store.commit('fillCart')
-  // }
+  created() {
+    this.$store.commit('fillCart')
+  }
 }
 </script>
 
