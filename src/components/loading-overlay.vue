@@ -10,23 +10,23 @@ export default {}
 <style lang="scss" scoped>
 .loader {
   position: fixed;
-  top: 0;
+  top: 51px;
   bottom: 0;
   left: 0;
   right: 0;
-  // background-color: rgba(0, 0, 0, 0.5);
-  background-color: #777;
+  background-color: rgba(255, 255, 255, 0.9);
+  // background-color: #777;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   .fa-spinner {
-    color: #fff;
+    color: #232323;
   }
   p {
     margin-top: 30px;
     font-size: 24px;
-    color: #fff;
+    color: #232323;
   }
 }
 </style>

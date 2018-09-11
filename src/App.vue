@@ -4,6 +4,7 @@
       <div class="wrap">
         <router-link to="/" class="logo" exact>Beers</router-link>
         <router-link to="/cart" class="cart">
+          <div v-if="sumCart" class="circle">{{sumCart}}</div>
           <font-awesome-icon icon="shopping-cart" size="2x" />
         </router-link>
       </div>
@@ -21,6 +22,11 @@
 export default {
   created() {
     this.$store.commit('fillCart')
+  },
+  computed: {
+    sumCart() {
+      return this.$store.state.cart.length
+    }
   }
 }
 </script>

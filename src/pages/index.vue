@@ -212,8 +212,6 @@ export default {
   padding-bottom: 71px;
 }
 section.beers {
-  margin: 0 0 20px;
-  // min-height: calc(100vh - 151px);
   aside {
     width: 338px;
     overflow: auto;
@@ -325,7 +323,6 @@ section.beers {
       height: 32px;
       line-height: 32px;
       grid-column: 1 / 3;
-      margin-bottom: 24px;
     }
     .spinner {
       grid-column: 1 / 3;
