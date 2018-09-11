@@ -1,11 +1,11 @@
 
 <template>
   <div class="cart">
+    <div class="error" v-if="error || isCartEmpty">
+      <font-awesome-icon icon="cart-arrow-down" size="2x" />
+      <p>Ooops, your cart is empty</p>
+    </div>
     <div class="wrap">
-      <div class="error" v-if="error || isCartEmpty">
-        <font-awesome-icon icon="cart-arrow-down" size="2x" />
-        <p>Ooops, your cart is empty</p>
-      </div>
       <div v-for="ci in cart" :key="ci.id" class="item">
         <img :src="`${ci.image_url}`">
         <router-link :to="`/beers/${ci.id}`" class="link">{{ci.name}}</router-link>
@@ -62,7 +62,9 @@ export default {
 <style lang="scss" scoped>
 @import '~styles/variables';
 .cart {
-  padding-bottom: 20px;
+  height: 100%;
+  margin-bottom: -41px;
+  padding-bottom: 71px;
   .wrap {
     display: grid;
     gap: 16px;
@@ -88,7 +90,7 @@ export default {
   .error {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 120px);
+    height: 100%;
     align-items: center;
     justify-content: center;
     font-size: 28px;

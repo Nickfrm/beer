@@ -54,8 +54,9 @@
  }
 
  body {
-   margin: 51px 0 -40px;
-   padding-top: 24px;
+   //  margin: 51px 0 0;
+   margin: 0;
+   padding-top: 75px;
    //  font-family: 'Montserrat', sans-serif;
    font-family: 'Raleway', sans-serif;
  }
@@ -69,14 +70,29 @@
    box-sizing: border-box;
  }
 
- html,
- body {
+ //  html,
+ //  body {
+ //    height: 100%;
+ //    position: relative;
+ //  }
+
+ //  #app > div {
+ //    min-height: 100%;
+ //  }
+ html {
    height: 100%;
-   position: relative;
-   min-height: 100%;
  }
 
+ body {
+   min-height: 100%;
+   display: grid;
+   grid-template-rows: 1fr auto;
+ }
 
+ footer {
+   grid-row-start: 2;
+   grid-row-end: 3;
+ }
 
  // Typographic
 

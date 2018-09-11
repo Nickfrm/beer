@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content">
     <section class="beers">
       <div class="wrap">
         <aside id="sidebar">
@@ -182,7 +182,7 @@ export default {
     resetAll() {
       this.sumFilters = ''
       Object.keys(this.filters).forEach(k => (this.filters[k] = ''))
-      this.applyFilters()
+      this.getBeers()
       this.noList = false
     },
     loadMore() {
@@ -206,6 +206,11 @@ export default {
 
 <style lang="scss">
 @import '~styles/variables';
+.content {
+  height: 100%;
+  margin-bottom: -41px;
+  padding-bottom: 71px;
+}
 section.beers {
   margin: 0 0 20px;
   // min-height: calc(100vh - 151px);
@@ -274,7 +279,7 @@ section.beers {
   }
   .main {
     display: grid;
-    grid: 200px / 1fr 2fr;
+    grid: auto / 1fr 2fr;
     gap: 32px;
     .list {
       grid-column-start: 2;
