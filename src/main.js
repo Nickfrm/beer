@@ -5,6 +5,7 @@ import store from './store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import customButton from '@/components/button'
+import customSelect from '@/components/custom-select'
 import customLink from '@/components/link'
 import loadingOverlay from '@/components/loading-overlay'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -19,6 +20,7 @@ Vue.use(VueAxios, axios)
 Vue.config.productionTip = false
 
 Vue.component('custom-button', customButton.default || customButton)
+Vue.component('custom-select', customSelect.default || customSelect)
 Vue.component('custom-link', customLink.default || customLink)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('loading-overlay', loadingOverlay)

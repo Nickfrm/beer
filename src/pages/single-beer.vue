@@ -1,6 +1,5 @@
 <template>
-  <loading-overlay v-if="loading"></loading-overlay>
-  <div v-else class="single-beer">
+  <div class="single-beer">
     <div class="wrap">
       <div>
         <h2>{{beer.name}}</h2>
@@ -22,7 +21,7 @@
         <p>
           <b>{{beer.tagline}}</b>
         </p>
-        <custom-button @click.native="addToCart(beer.id)" :disabled="checkIfAdded(beer.id)">Add to cart
+        <custom-button @click.native="addToCart(beer.id)" :disabled="isInCart">Add to cart
           <font-awesome-icon icon="credit-card" />
         </custom-button>
         <router-link class="btn-cta light" to="/cart">Check your cart</router-link>
@@ -35,19 +34,22 @@
 export default {
   data() {
     return {
-      beer: {},
-      loading: 0
+      beer: {}
     }
   },
   created() {
-    this.loading = 1
+    this.$store.commit('loadingOn')
     this.$http
       .get(`https://api.punkapi.com/v2/beers/${this.$route.params.id}`)
       .then(resp => (this.beer = resp.data[0]), err => console.error(err))
       .finally(() => {
-        this.checkExistingStorage()
-        this.loading = 0
+        this.$store.commit('loadingOff')
       })
+  },
+  computed: {
+    isInCart() {
+      return this.$store.state.cart.includes(this.beer.id)
+    }
   },
   methods: {
     addToCart(id) {
@@ -56,12 +58,6 @@ export default {
         id: id
       })
       console.log(this.$store.state.cart)
-    },
-    checkIfAdded(id) {
-      return this.$store.state.cart.includes(id)
-    },
-    checkExistingStorage() {
-      this.$store.commit('checkExistingStorage')
     }
   }
 }

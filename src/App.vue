@@ -9,8 +9,19 @@
       </div>
     </header>
     <router-view/>
+    <loading-overlay v-if="$store.state.loading"></loading-overlay>
+
   </div>
 </template>
+
+
+<script>
+export default {
+  // created() {
+  //   // this.$store.commit('fillCart')
+  // }
+}
+</script>
 
 <style lang="scss">
 @import '~styles/app';

@@ -1,67 +1,43 @@
 <template>
-  <loading-overlay v-if="loading"></loading-overlay>
-  <div v-else>
+  <div>
     <section class="beers">
       <div class="wrap">
         <aside id="sidebar">
           <h5>Search your beer:</h5>
-          <form @submit.prevent="searchBeer" class="search">
+          <div class="form search">
             <input v-model="filters.name" required="required" placeholder="My favourite beer" type="text">
-            <custom-button>Go!</custom-button>
-          </form>
+            <custom-button @click.native="getBeers">Go!</custom-button>
+          </div>
           <h5>Filters:</h5>
-          <form @submit.prevent="applyFilters" class="filters">
+          <div class="form filters">
             <div class="form-field">
-              <select v-model="filters.abv" :class="{active:filters.abv!==''}">
-                <option disabled value="">Alcohol by volume</option>
-                <option value="abv_lt=4">Very low alcoholic</option>
-                <option value="abv_gt=4&abv_lt=10">Low alcoholic</option>
-                <option value="abv_gt=10&abv_lt=20">Medium alcoholic</option>
-                <option value="abv_gt=20&abv_lt=35">High alcoholic</option>
-                <option value="abv_gt=35">Blowing your mind</option>
-              </select>
-              <select v-model="filters.ibu" :class="{active:filters.ibu!==''}">
-                <option disabled value="">Bitterness</option>
-                <option value="ibu_lt=10">Slight bitterness</option>
-                <option value="ibu_gt=10&ibu_lt=25">Average bitterness</option>
-                <option value="ibu_gt=25&ibu_lt=45">Medium bitterness</option>
-                <option value="ibu_gt=45&ibu_lt=80">Strong bitterness</option>
-                <option value="ibu_gt=80&ibu_lt=120">Try not to cry</option>
-              </select>
+              <custom-select v-model="filters.abv" :items="getQueryRanges(abvs, 'abv')" :class="{active:!filters.abv}" none="Alcohol by volume" />
+              <custom-select v-model="filters.ibu" :items="getQueryRanges(ibus, 'ibu')" :class="{active:!filters.ibu}" none="Bitterness" />
               <div class="ebc">
-                <div>
-                  <input type="radio" id="one" value="ebc_lt=20" v-model="filters.ebc">
-                  <label for="one">Light beer</label>
-                </div>
-                <div>
-                  <input type="radio" id="two" value="ebc_gt=20" v-model="filters.ebc">
-                  <label for="two">Dark beer</label>
-                </div>
+                <label>
+                  <input type="radio" value="ebc_lt=20" v-model="filters.ebc"> Light beer
+                </label>
+                <label>
+                  <input type="radio" value="ebc_gt=20" v-model="filters.ebc"> Dark beer
+                </label>
               </div>
-              <select v-model="filters.dateOfBrew" :class="{active:filters.dateOfBrew!==''}">
-                <option disabled value="">Date of brew</option>
-                <option value="brewed_after=01-2005&brewed_before=12-2007">2005 - 2007</option>
-                <option value="brewed_after=01-2007&brewed_before=12-2009">2007 - 2009</option>
-                <option value="brewed_after=01-2009&brewed_before=12-2011">2009 - 2011</option>
-                <option value="brewed_after=01-2011&brewed_before=12-2013">2011 - 2013</option>
-                <option value="brewed_after=01-2013&brewed_before=12-2015">2013 - 2015</option>
-              </select>
+              <custom-select v-model="filters.dateOfBrew" :items="getQueryRanges(brewedDates, 'brewed')" :class="{active:!filters.dateOfBrew}" none="Date of brew" />
               <input type="text" v-model="filters.hops" placeholder="The hops you want">
               <input type="text" v-model="filters.malt" placeholder="The malt you want">
               <input type="text" v-model="filters.food" placeholder="The food you want">
             </div>
-            <custom-button>Apply</custom-button>
+            <custom-button @click.native="getBeers">Apply</custom-button>
             <div class="tar">
               <custom-link type="button" @click.native="resetAll">Reset All</custom-link>
             </div>
-          </form>
+          </div>
         </aside>
         <div class="main">
           <div v-if="noList" class="error-msg">
             Sorry! We have no results from your search. <br> Please change your request and try again.
           </div>
-          <div v-if="!noList" class="list ">
-            <div v-for="i in resultItems " :key="i.id " class="card ">
+          <div v-else class="list ">
+            <div v-for="i in beers " :key="i.id " class="card ">
               <div class="content">
                 <h4>{{i.name}}</h4>
                 <b>{{i.tagline}}</b>
@@ -73,8 +49,8 @@
                 <font-awesome-icon icon="credit-card" />
               </custom-button>
             </div>
-            <custom-button v-if="!noList && isNextPageExist && inlineLoading===0" @click.native="loadMore" class="light">Load more...</custom-button>
-            <inlineLoading v-if="inlineLoading===1"></inlineLoading>
+            <custom-button v-if="isNextPageExist && !inlineLoading" @click.native="loadMore" class="light">Load more...</custom-button>
+            <inlineLoading v-if="inlineLoading" />
           </div>
         </div>
       </div>
@@ -88,7 +64,7 @@ export default {
   components: { inlineLoading },
   data() {
     return {
-      resultItems: [],
+      beers: [],
       filters: {
         abv: '',
         ibu: '',
@@ -104,71 +80,47 @@ export default {
       singleBeer: {},
       currentPage: 1,
       isNextPageExist: true,
-      loading: 0,
-      inlineLoading: 0
-    }
-  },
-  updated() {
-    if (window.innerHeight < 750) {
-      document.getElementById('sidebar').style.bottom = '25px'
+      inlineLoading: 0,
+      brewedDates: [
+        { name: '2007-2009', before: '12-2009', after: '01-2007' },
+        { name: '2009-2011', before: '12-2011', after: '01-2009' },
+        { name: '2011-2013', before: '12-2013', after: '01-2011' },
+        { name: '2013-2015', before: '12-2015', after: '01-2013' }
+      ],
+      ibus: [
+        { name: 'Slight bitterness', lt: 10 },
+        { name: 'Medium bitterness', lt: 45, gt: 25 },
+        { name: 'Strong bitterness', lt: 80, gt: 45 },
+        { name: 'Try not to cry', lt: 120, gt: 80 }
+      ],
+      abvs: [
+        { name: 'Very low alcoholic', lt: 4 },
+        { name: 'Low alcoholic', gt: 4, lt: 10 },
+        { name: 'Medium alcoholic', gt: 10, lt: 20 },
+        { name: 'High alcoholic', gt: 20, lt: 35 },
+        { name: 'Blowing your mind', gt: 35 }
+      ]
     }
   },
   created() {
-    this.loading = 1
-    this.$http
-      .get('https://api.punkapi.com/v2/beers?per_page=24')
-      .then(
-        resp => {
-          console.log(resp)
-          // truncation of description
-          for (let key in resp.data) {
-            if (resp.data[key].name.length < 15) {
-              resp.data[key].description = `${resp.data[key].description.substring(0, 100)}...`
-            } else {
-              resp.data[key].description = `${resp.data[key].description.substring(0, 50)}...`
-            }
-          }
-          this.resultItems = resp.data
-        },
-        err => {
-          console.error(err)
-        }
-      )
-      .finally(() => {
-        this.checkExistingStorage()
-        this.loading = 0
-      })
+    this.getBeers()
   },
   methods: {
-    getSumFilters() {
-      this.sumFilters = ''
-      for (let key in this.filters) {
-        if (this.filters[key] !== '') {
-          if (key === 'hops' || key === 'malt' || key === 'food') {
-            this.sumFilters += `&${key}=${this.filters[key]}`
-          } else {
-            this.sumFilters += `&${this.filters[key]}`
-          }
-        }
-      }
-    },
-    applyFilters() {
-      this.getSumFilters()
-      this.loading = 1
+    getBeers() {
+      this.setSumFilters()
+      this.$store.commit('loadingOn')
       this.$http
-        .get(`https://api.punkapi.com/v2/beers?per_page=24${this.sumFilters}`)
+        .get(`https://api.punkapi.com/v2/beers?per_page=24&page=${this.currentPage}${this.sumFilters}`)
         .then(
           resp => {
             console.log(resp)
+            // truncation of description
             for (let key in resp.data) {
-              if (resp.data[key].name.length < 15) {
-                resp.data[key].description = `${resp.data[key].description.substring(0, 100)}...`
-              } else {
-                resp.data[key].description = `${resp.data[key].description.substring(0, 50)}...`
-              }
+              let el = resp.data[key]
+              el.description = `${el.description.substring(0, el.name.length < 15 ? 100 : 50)}...`
             }
             if (resp.data.length) {
-              this.resultItems = resp.data
+              this.beers = resp.data
               this.noList = false
               if (resp.data.length < 23) {
                 this.isNextPageExist = false
@@ -182,8 +134,40 @@ export default {
           }
         )
         .finally(() => {
-          this.loading = 0
+          this.$store.commit('loadingOff')
         })
+    },
+    getQueryRanges(arr, queryName) {
+      return arr.map(e => {
+        let id = ''
+        for (const k in e) {
+          if (e.hasOwnProperty(k) && k != 'name') {
+            const el = e[k]
+            if (el) {
+              if (id) id += '&'
+              id += `${queryName}_${k}=${el}`
+            }
+          }
+        }
+        return {
+          id,
+          name: e.name
+        }
+      })
+    },
+    setSumFilters() {
+      this.sumFilters = ''
+      for (let key in this.filters) {
+        let el = this.filters[key]
+        if (el) {
+          if (['hops', 'malt', 'food', 'name'].includes(key)) {
+            if (key === 'name') key = 'beer_name'
+            this.sumFilters += `&${key}=${el}`
+          } else {
+            this.sumFilters += `&${el}`
+          }
+        }
+      }
     },
     resetAll() {
       this.sumFilters = ''
@@ -191,96 +175,10 @@ export default {
       this.applyFilters()
       this.noList = false
     },
-    searchBeer() {
-      this.filters.sumFilters = ''
-      // let arr = this.name.split(' ')
-      // let names = arr.join('_')
-      this.loading = 1
-      this.$http
-        .get(`https://api.punkapi.com/v2/beers?beer_name=${this.filters.name}`)
-        .then(
-          resp => {
-            console.log(resp)
-            for (let key in resp.data) {
-              let el = resp.data[key]
-              if (el.name.length < 15) {
-                el.description = `${el.description.substring(0, 100)}...`
-              } else {
-                el.description = `${el.description.substring(0, 50)}...`
-              }
-            }
-            if (resp.data.length) {
-              this.resultItems = resp.data
-              this.noList = false
-              if (resp.data.length < 23) {
-                this.isNextPageExist = false
-              }
-            } else {
-              this.noList = true
-            }
-          },
-          err => {
-            console.error(err)
-          }
-        )
-        .finally(() => {
-          this.loading = 0
-        })
-    },
     loadMore() {
       this.currentPage += 1
       this.inlineLoading = 1
-      if (this.filters.name === '') {
-        this.$http
-          .get(`https://api.punkapi.com/v2/beers?per_page=24&page=${this.currentPage}&${this.sumFilters}`)
-          .then(
-            resp => {
-              for (let key in resp.data) {
-                let el = resp.data[key]
-                if (el.name.length < 15) {
-                  el.description = `${el.description.substring(0, 100)}...`
-                } else {
-                  el.description = `${el.description.substring(0, 50)}...`
-                }
-              }
-              this.resultItems.push(...resp.data)
-              if (resp.data.length < 23) {
-                this.isNextPageExist = false
-              }
-            },
-            err => {
-              console.error(err)
-            }
-          )
-          .finally(() => {
-            this.inlineLoading = 0
-          })
-      } else {
-        this.$http
-          .get(`https://api.punkapi.com/v2/beers?per_page=24&page=${this.currentPage}&beer_name=${this.filters.name}`)
-          .then(
-            resp => {
-              for (let key in resp.data) {
-                let el = resp.data[key]
-                if (el.name.length < 15) {
-                  el.description = `${el.description.substring(0, 100)}...`
-                } else {
-                  el.description = `${el.description.substring(0, 50)}...`
-                }
-              }
-              this.resultItems.push(...resp.data)
-              if (resp.data.length < 23) {
-                this.isNextPageExist = false
-              }
-            },
-            err => {
-              console.error(err)
-            }
-          )
-          .finally(() => {
-            this.inlineLoading = 0
-          })
-      }
+      this.getBeers()
     },
     addToCart(id) {
       this.$store.commit({
@@ -290,9 +188,6 @@ export default {
     },
     checkIfAdded(id) {
       return this.$store.state.cart.includes(id)
-    },
-    checkExistingStorage() {
-      this.$store.commit('checkExistingStorage')
     }
   },
   computed: {}

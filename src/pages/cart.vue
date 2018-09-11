@@ -1,16 +1,15 @@
 
 <template>
-  <loading-overlay v-if="loading"></loading-overlay>
-  <div v-else class="cart">
+  <div class="cart">
     <div class="wrap">
       <div class="error" v-if="error || isCartEmpty">Ooops, your cart is empty</div>
-      <div v-for="i in addedToCart" :key="i.id" class="item" v-if="i.id">
-        <img :src="`${i.image_url}`" alt=" ">
-        <router-link :to="`/beers/${i.id}`" class="link">{{i.name}}</router-link>
+      <div v-for="ci in cart" :key="ci.id" class="item">
+        <img :src="`${ci.image_url}`">
+        <router-link :to="`/beers/${ci.id}`" class="link">{{ci.name}}</router-link>
         <p>
-          <b>{{i.tagline}}</b>
+          <b>{{ci.tagline}}</b>
         </p>
-        <custom-button @click.native="removeFromList(i, i.id)">Remove from cart</custom-button>
+        <custom-button @click.native="remove(ci)">Remove from cart</custom-button>
       </div>
     </div>
   </div>
@@ -19,24 +18,21 @@
 export default {
   data() {
     return {
-      addedToCart: [],
-      loading: 0,
+      cart: [],
       error: false
     }
   },
   created() {
-    this.loading = 1
-    this.checkExistingStorage()
+    this.$store.commit('loadingOn')
     let ids = this.$store.state.cart.join('|')
     let length = this.$store.state.cart.length
-    console.log(ids)
     this.$http
       .get(`https://api.punkapi.com/v2/beers?per_page=${length}&ids=${ids}`)
       .then(
         resp => {
           console.log(resp)
           this.error = false
-          this.addedToCart = resp.data
+          this.cart = resp.data
         },
         err => {
           console.error(err)
@@ -44,31 +40,18 @@ export default {
         }
       )
       .finally(() => {
-        this.loading = 0
+        this.$store.commit('loadingOff')
       })
   },
   methods: {
-    removeFromList(el, id) {
-      this.removeFromCart(id)
-      this.addedToCart.splice(this.addedToCart.indexOf(el), 1)
-    },
-    removeFromCart(id) {
-      this.$store.commit({
-        type: 'removeFromCart',
-        id: id
-      })
-    },
-    checkExistingStorage() {
-      this.$store.commit('checkExistingStorage')
+    remove(el) {
+      this.$store.commit('removeFromCart', el.id)
+      this.cart.splice(this.cart.indexOf(el), 1)
     }
   },
   computed: {
-    isCartEmpty: function() {
-      if (this.addedToCart.length === 0) {
-        return true
-      } else {
-        return false
-      }
+    isCartEmpty() {
+      return this.cart.length === 0
     }
   }
 }
