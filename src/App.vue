@@ -10,7 +10,6 @@
     </header>
     <router-view/>
     <loading-overlay v-if="$store.state.loading"></loading-overlay>
-
   </div>
 </template>
 

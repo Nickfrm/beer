@@ -2,7 +2,10 @@
 <template>
   <div class="cart">
     <div class="wrap">
-      <div class="error" v-if="error || isCartEmpty">Ooops, your cart is empty</div>
+      <div class="error" v-if="error || isCartEmpty">
+        <font-awesome-icon icon="cart-arrow-down" size="2x" />
+        <p>Ooops, your cart is empty</p>
+      </div>
       <div v-for="ci in cart" :key="ci.id" class="item">
         <img :src="`${ci.image_url}`">
         <router-link :to="`/beers/${ci.id}`" class="link">{{ci.name}}</router-link>
@@ -84,11 +87,15 @@ export default {
   }
   .error {
     display: flex;
+    flex-direction: column;
     height: calc(100vh - 120px);
     align-items: center;
     justify-content: center;
     font-size: 28px;
     font-weight: 700;
+    .fa-cart-arrow-down {
+      display: block;
+    }
   }
 }
 </style>

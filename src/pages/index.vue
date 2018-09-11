@@ -11,8 +11,8 @@
           <h5>Filters:</h5>
           <div class="form filters">
             <div class="form-field">
-              <custom-select v-model="filters.abv" :items="getQueryRanges(abvs, 'abv')" :class="{active:!filters.abv}" none="Alcohol by volume" />
-              <custom-select v-model="filters.ibu" :items="getQueryRanges(ibus, 'ibu')" :class="{active:!filters.ibu}" none="Bitterness" />
+              <custom-select v-model="filters.abv" :items="getQueryRanges(abvs, 'abv')" :class="{active:filters.abv}" none="Alcohol by volume" />
+              <custom-select v-model="filters.ibu" :items="getQueryRanges(ibus, 'ibu')" :class="{active:filters.ibu}" none="Bitterness" />
               <div class="ebc">
                 <label>
                   <input type="radio" value="ebc_lt=20" v-model="filters.ebc"> Light beer
@@ -21,7 +21,7 @@
                   <input type="radio" value="ebc_gt=20" v-model="filters.ebc"> Dark beer
                 </label>
               </div>
-              <custom-select v-model="filters.dateOfBrew" :items="getQueryRanges(brewedDates, 'brewed')" :class="{active:!filters.dateOfBrew}" none="Date of brew" />
+              <custom-select v-model="filters.dateOfBrew" :items="getQueryRanges(brewedDates, 'brewed')" :class="{active:filters.dateOfBrew}" none="Date of brew" />
               <input type="text" v-model="filters.hops" placeholder="The hops you want">
               <input type="text" v-model="filters.malt" placeholder="The malt you want">
               <input type="text" v-model="filters.food" placeholder="The food you want">
