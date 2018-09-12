@@ -77,7 +77,6 @@ export default {
       },
       sumFilters: '',
       noList: false,
-      singleBeer: {},
       currentPage: 1,
       isNextPageExist: true,
       inlineLoading: 0,

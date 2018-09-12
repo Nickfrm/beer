@@ -2,10 +2,16 @@
   <div id="app">
     <header>
       <div class="wrap">
-        <div class="left-align">
-          <div class="bars">
-            <font-awesome-icon icon="bars" />
+        <div class="dropdown-overflow" :class="{active:dropdown}">
+          <div class="dropdown" :class="{active:dropdown}">
+            <div class="wrap"></div>
           </div>
+        </div>
+        <div class="left-align">
+          <button @click="toggleDropdown" class="menu">
+            <font-awesome-icon v-if="!dropdown" icon="bars" />
+            <font-awesome-icon v-else icon="times" />
+          </button>
           <router-link to="/" class="logo" exact>Beers</router-link>
           <div class="search">
             <input required="required" placeholder="My favourite beer" type="text">
@@ -31,12 +37,23 @@
 
 <script>
 export default {
+  data() {
+    return {
+      dropdown: false
+    }
+  },
   created() {
     this.$store.commit('fillCart')
   },
   computed: {
     sumCart() {
       return this.$store.state.cart.length
+    }
+  },
+  methods: {
+    toggleDropdown() {
+      this.dropdown = !this.dropdown
+      console.log(this.dropdown)
     }
   }
 }

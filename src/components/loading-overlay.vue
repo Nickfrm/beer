@@ -22,6 +22,7 @@ export default {}
   flex-direction: column;
   .fa-spinner {
     color: #232323;
+    z-index: 9999;
   }
   p {
     margin-top: 30px;

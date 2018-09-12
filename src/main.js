@@ -9,11 +9,11 @@ import customSelect from '@/components/custom-select'
 import customLink from '@/components/link'
 import loadingOverlay from '@/components/loading-overlay'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSpinner, faShoppingCart, faMoneyBillAlt, faCreditCard, faCartArrowDown, faBars, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faSpinner, faShoppingCart, faMoneyBillAlt, faCreditCard, faCartArrowDown, faBars, faSearch, faCaretDown, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faSpinner, faShoppingCart, faMoneyBillAlt, faCreditCard, faCartArrowDown, faBars, faSearch)
+library.add(faSpinner, faShoppingCart, faMoneyBillAlt, faCreditCard, faCartArrowDown, faBars, faSearch, faCaretDown, faTimes)
 
 Vue.use(VueAxios, axios)
 
