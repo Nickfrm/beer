@@ -2,7 +2,7 @@
   <div class="content">
     <section class="beers">
       <div class="wrap">
-        <aside id="sidebar">
+        <!-- <aside id="sidebar">
           <h5>Search your beer:</h5>
           <div class="form search">
             <input v-model="filters.name" required="required" placeholder="My favourite beer" type="text">
@@ -31,7 +31,7 @@
               <custom-link type="button" @click.native="resetAll">Reset All</custom-link>
             </div>
           </div>
-        </aside>
+        </aside> -->
         <div class="main">
           <div v-if="noList" class="error-msg">
             Sorry! We have no results from your search. <br> Please change your request and try again.
@@ -65,53 +65,56 @@ export default {
   data() {
     return {
       beers: [],
-      filters: {
-        abv: '',
-        ibu: '',
-        ebc: '',
-        dateOfBrew: '',
-        hops: '',
-        malt: '',
-        food: '',
-        name: ''
-      },
+      // filters: {
+      //   abv: '',
+      //   ibu: '',
+      //   ebc: '',
+      //   dateOfBrew: '',
+      //   hops: '',
+      //   malt: '',
+      //   food: '',
+      //   name: ''
+      // },
       sumFilters: '',
       noList: false,
       currentPage: 1,
       isNextPageExist: true,
-      inlineLoading: 0,
-      brewedDates: [
-        { name: '2007-2009', before: '12-2009', after: '01-2007' },
-        { name: '2009-2011', before: '12-2011', after: '01-2009' },
-        { name: '2011-2013', before: '12-2013', after: '01-2011' },
-        { name: '2013-2015', before: '12-2015', after: '01-2013' }
-      ],
-      ibus: [
-        { name: 'Slight bitterness', lt: 10 },
-        { name: 'Medium bitterness', lt: 45, gt: 25 },
-        { name: 'Strong bitterness', lt: 80, gt: 45 },
-        { name: 'Try not to cry', lt: 120, gt: 80 }
-      ],
-      abvs: [
-        { name: 'Very low alcoholic', lt: 4 },
-        { name: 'Low alcoholic', gt: 4, lt: 10 },
-        { name: 'Medium alcoholic', gt: 10, lt: 20 },
-        { name: 'High alcoholic', gt: 20, lt: 35 },
-        { name: 'Blowing your mind', gt: 35 }
-      ]
+      inlineLoading: 0
+      // brewedDates: [
+      //   { name: '2007-2009', before: '12-2009', after: '01-2007' },
+      //   { name: '2009-2011', before: '12-2011', after: '01-2009' },
+      //   { name: '2011-2013', before: '12-2013', after: '01-2011' },
+      //   { name: '2013-2015', before: '12-2015', after: '01-2013' }
+      // ],
+      // ibus: [
+      //   { name: 'Slight bitterness', lt: 10 },
+      //   { name: 'Medium bitterness', lt: 45, gt: 25 },
+      //   { name: 'Strong bitterness', lt: 80, gt: 45 },
+      //   { name: 'Try not to cry', lt: 120, gt: 80 }
+      // ],
+      // abvs: [
+      //   { name: 'Very low alcoholic', lt: 4 },
+      //   { name: 'Low alcoholic', gt: 4, lt: 10 },
+      //   { name: 'Medium alcoholic', gt: 10, lt: 20 },
+      //   { name: 'High alcoholic', gt: 20, lt: 35 },
+      //   { name: 'Blowing your mind', gt: 35 }
+      // ]
     }
   },
   created() {
     this.getBeers()
   },
+  watch: {
+    isFiltersApplyed: 'getBeers'
+  },
   methods: {
     getBeers() {
-      this.setSumFilters()
+      // this.setSumFilters()
       if (!this.inlineLoading) {
         this.$store.commit('loadingOn')
       }
       this.$http
-        .get(`https://api.punkapi.com/v2/beers?per_page=24&page=${this.currentPage}${this.sumFilters}`)
+        .get(`https://api.punkapi.com/v2/beers?per_page=24&page=${this.currentPage}${this.$store.state.filters}`)
         .then(
           resp => {
             console.log(resp)
@@ -146,44 +149,44 @@ export default {
           this.$store.commit('loadingOff')
         })
     },
-    getQueryRanges(arr, queryName) {
-      return arr.map(e => {
-        let id = ''
-        for (const k in e) {
-          if (e.hasOwnProperty(k) && k != 'name') {
-            const el = e[k]
-            if (el) {
-              if (id) id += '&'
-              id += `${queryName}_${k}=${el}`
-            }
-          }
-        }
-        return {
-          id,
-          name: e.name
-        }
-      })
-    },
-    setSumFilters() {
-      this.sumFilters = ''
-      for (let key in this.filters) {
-        let el = this.filters[key]
-        if (el) {
-          if (['hops', 'malt', 'food', 'name'].includes(key)) {
-            if (key === 'name') key = 'beer_name'
-            this.sumFilters += `&${key}=${el}`
-          } else {
-            this.sumFilters += `&${el}`
-          }
-        }
-      }
-    },
-    resetAll() {
-      this.sumFilters = ''
-      Object.keys(this.filters).forEach(k => (this.filters[k] = ''))
-      this.getBeers()
-      this.noList = false
-    },
+    // getQueryRanges(arr, queryName) {
+    //   return arr.map(e => {
+    //     let id = ''
+    //     for (const k in e) {
+    //       if (e.hasOwnProperty(k) && k != 'name') {
+    //         const el = e[k]
+    //         if (el) {
+    //           if (id) id += '&'
+    //           id += `${queryName}_${k}=${el}`
+    //         }
+    //       }
+    //     }
+    //     return {
+    //       id,
+    //       name: e.name
+    //     }
+    //   })
+    // },
+    // setSumFilters() {
+    //   this.sumFilters = ''
+    //   for (let key in this.filters) {
+    //     let el = this.filters[key]
+    //     if (el) {
+    //       if (['hops', 'malt', 'food', 'name'].includes(key)) {
+    //         if (key === 'name') key = 'beer_name'
+    //         this.sumFilters += `&${key}=${el}`
+    //       } else {
+    //         this.sumFilters += `&${el}`
+    //       }
+    //     }
+    //   }
+    // },
+    // resetAll() {
+    //   this.sumFilters = ''
+    //   Object.keys(this.filters).forEach(k => (this.filters[k] = ''))
+    //   this.getBeers()
+    //   this.noList = false
+    // },
     loadMore() {
       this.currentPage += 1
       this.inlineLoading = 1
@@ -199,7 +202,11 @@ export default {
       return this.$store.state.cart.includes(id)
     }
   },
-  computed: {}
+  computed: {
+    isFiltersApplyed() {
+      return this.$store.state.filters
+    }
+  }
 }
 </script>
 

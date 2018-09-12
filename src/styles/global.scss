@@ -7,7 +7,7 @@ header {
   border-bottom: 1px solid #ccc;
   background-color: $l-grey;
 
-  .wrap {
+  > .wrap {
     height: 50px;
     display: flex;
     align-items: center;
@@ -29,6 +29,12 @@ header {
         .fa-bars,
         .fa-times {
           font-size: 22px;
+          color: $l-main;
+          transition: all 0.3s ease;
+
+          &:hover {
+            color: $main;
+          }
         }
       }
 
@@ -36,14 +42,19 @@ header {
         margin-left: 20px;
 
         input {
-          height: 24px;
+          height: 26px;
+          width: 250px;
           padding: 0 5px;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
         }
 
         .btn-cta {
-          height: 24px;
-          line-height: 24px;
+          height: 26px;
+          line-height: 26px;
           vertical-align: bottom;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
         }
       }
     }
@@ -59,6 +70,7 @@ header {
         text-transform: uppercase;
         font-weight: 700;
         position: relative;
+        font-size: 1.5em;
 
         .circle {
           border-radius: 50%;
@@ -66,7 +78,7 @@ header {
           width: 17px;
           position: absolute;
           top: -3px;
-          right: -2px;
+          right: -7px;
           background-color: #ab5595;
           color: #fff;
           font-weight: 300;
@@ -108,37 +120,73 @@ header {
       height: 0;
       width: 100%;
       transition: all .1s ease-out;
+      opacity: 0;
+      pointer-events: none;
+
+      .wrap {
+        padding: 24px 0;
+
+        .filters {
+          display: grid;
+          grid: auto / repeat(3, 1fr);
+          grid-gap: 40px;
+          margin-bottom: 12px;
+
+          select {
+            width: 100%;
+            height: 28px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            color: #aaa;
+            padding-left: 10px;
+            margin-bottom: 12px;
 
 
+            &.active {
+              color: #333;
+              border-color: #bbb;
+            }
 
-      // .triangle {
-      //   left: -1px;
-      //   top: -25px;
-      //   height: 0;
-      //   width: 25px;
-      //   position: absolute;
-      //   overflow: hidden;
-      // }
+            option {
+              color: #333;
+            }
+          }
 
-      // .triangle:before {
-      //   height: 100%;
-      //   width: 100%;
-      //   position: relative;
-      //   transform: rotate(45deg);
-      //   content: '';
-      //   display: block;
-      //   position: absolute;
-      //   border: 1px solid #ccc;
-      //   bottom: -70%;
-      //   background-color: $l-grey;
-      // }
+          input[type='text'] {
+            height: 28px;
+            padding: 0 10px;
+            width: 100%;
+            margin-bottom: 12px;
+
+
+            &::placeholder {
+              color: #aaa;
+              font-size: 14px;
+            }
+          }
+
+          .ebc {
+            font-size: 14px;
+            color: #333;
+            margin-top: 5px;
+
+            label {
+              padding-right: 5px;
+            }
+          }
+        }
+      }
+
+      .btn-cta {
+        margin-right: 20px;
+        padding: 0 40px;
+      }
 
       &.active {
         border-bottom: 1px solid #ccc;
-        height: 300px;
-        //   .triangle {
-        //     height: 25px;
-        //   }
+        height: 209px;
+        opacity: 1;
+        pointer-events: auto;
       }
     }
   }
@@ -232,6 +280,66 @@ a {
   cursor: pointer;
   text-decoration: none;
   transition: all .2s ease-out;
+}
+
+input, select {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-icon {
+  position: relative;
+
+  .focus {
+    background-color: $d-grey;
+    border-radius: 60%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    height: 2px;
+    width: 2px;
+
+    transform: scale(0);
+    transition: all .1s ease;
+    z-index: -1;
+
+  }
+
+  &:focus {
+    outline: none;
+
+    .focus {
+      // transform: scale(1.7);
+      animation: focus 3s ease;
+    }
+  }
+}
+
+// Animations
+@keyframes focus {
+  0% {
+    transform: scale(0);
+  }
+
+  5% {
+    transform: scale(20);
+  }
+
+  99% {
+    transform: scale(20);
+  }
+
+  100% {
+    transform: scale(0);
+  }
 }
 
 // Accesibility

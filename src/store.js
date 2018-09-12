@@ -12,10 +12,20 @@ function receiveCart() {
   return existing ? JSON.parse(existing) : []
 }
 
+function saveFilters(filters) {
+  localStorage.setItem('filters', filters)
+}
+
+function receiveFilters() {
+  let existing = localStorage.getItem('filters')
+  return existing ? existing : ''
+}
+
 export default new Vuex.Store({
   state: {
     cart: [],
-    loading: 0
+    loading: 0,
+    filters: ''
   },
   mutations: {
     loadingOn(state) {
@@ -34,6 +44,17 @@ export default new Vuex.Store({
     },
     fillCart(state) {
       state.cart = receiveCart()
+    },
+    addFilters(state, payload) {
+      state.filters = payload
+      saveFilters(state.filters)
+    },
+    removeFilters(state) {
+      state.filters = ''
+      saveFilters(state.filters)
+    },
+    fillFilters(state) {
+      state.filters = receiveFilters()
     }
   },
   actions: {
