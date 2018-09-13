@@ -21,10 +21,11 @@
         <p>
           <b>{{beer.tagline}}</b>
         </p>
-        <custom-button @click.native="addToCart(beer.id)" :disabled="isInCart">Add to cart
+        <custom-button v-if="checkIfAdded(beer.id)" @click.native="removeFromCart(beer)" class="light">Remove from cart</custom-button>
+        <custom-button v-else @click.native="addToCart(beer.id)">Add to cart
           <font-awesome-icon icon="credit-card" />
         </custom-button>
-        <router-link class="btn-cta light" to="/cart">Check your cart</router-link>
+        <router-link class="btn-cta light check" to="/cart">Check your cart</router-link>
       </div>
       <img :src="`${beer.image_url}`" alt=" ">
     </div>
@@ -58,6 +59,12 @@ export default {
         id: id
       })
       console.log(this.$store.state.cart)
+    },
+    removeFromCart(el) {
+      this.$store.commit('removeFromCart', el)
+    },
+    checkIfAdded(id) {
+      return this.$store.state.cart.includes(id)
     }
   }
 }
@@ -86,7 +93,7 @@ export default {
         font-size: 16px;
         margin-left: 12px;
       }
-      &.light {
+      &.check {
         margin-left: 20px;
         line-height: 36px;
         text-align: center;
