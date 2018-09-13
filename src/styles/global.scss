@@ -47,6 +47,11 @@ header {
           padding: 0 5px;
           border-top-right-radius: 0;
           border-bottom-right-radius: 0;
+
+          &::placeholder {
+            color: #aaa;
+            font-size: 14px;
+          }
         }
 
         .btn-cta {
