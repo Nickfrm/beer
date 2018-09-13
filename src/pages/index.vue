@@ -150,7 +150,6 @@ export default {
     }
     .btn-cta {
       width: 100%;
-      line-height: 26px;
       grid-column: 1 / 3;
       margin-top: 10px;
       .fa-credit-card {

@@ -24,10 +24,10 @@ export default {
   color: #fff;
   border: 1px solid $l-main;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 15px;
   text-transform: uppercase;
-  height: 28px;
-  line-height: 28px;
+  height: 36px;
+  line-height: 36px;
   padding: 0 15px;
   transition: 0.3s ease;
   cursor: pointer;
