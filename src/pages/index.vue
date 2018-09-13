@@ -135,6 +135,7 @@ export default {
     grid: 270px / 3fr 1fr;
     gap: 16px;
     justify-items: center;
+    border-radius: 4px;
     img {
       max-height: calc(100% - 38px);
       max-width: 100%;
