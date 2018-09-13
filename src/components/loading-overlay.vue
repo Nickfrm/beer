@@ -10,7 +10,7 @@ export default {}
 <style lang="scss" scoped>
 .loader {
   position: fixed;
-  top: 51px;
+  top: 71px;
   bottom: 0;
   left: 0;
   right: 0;

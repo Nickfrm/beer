@@ -65,6 +65,7 @@ export default {
 <style lang="scss">
 @import '~styles/variables';
 .single-beer {
+  padding-bottom: 24px;
   .wrap {
     padding: 30px;
     background-color: $grey;

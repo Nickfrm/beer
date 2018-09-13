@@ -8,7 +8,7 @@ header {
   background-color: $l-grey;
 
   > .wrap {
-    height: 50px;
+    height: 70px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -28,7 +28,7 @@ header {
 
         .fa-bars,
         .fa-times {
-          font-size: 22px;
+          font-size: 26px;
           color: $l-main;
           transition: all 0.3s ease;
 
@@ -39,10 +39,10 @@ header {
       }
 
       .search {
-        margin-left: 20px;
+        margin-left: 24px;
 
         input {
-          height: 26px;
+          height: 34px;
           width: 250px;
           padding: 0 5px;
           border-top-right-radius: 0;
@@ -50,13 +50,13 @@ header {
 
           &::placeholder {
             color: #aaa;
-            font-size: 14px;
+            font-size: 15px;
           }
         }
 
         .btn-cta {
-          height: 26px;
-          line-height: 26px;
+          height: 34px;
+          line-height: 34px;
           vertical-align: bottom;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
@@ -66,7 +66,7 @@ header {
 
     a {
       &.logo {
-        font-size: 28px;
+        font-size: 32px;
         font-weight: 900;
         color: #232323;
       }
@@ -75,7 +75,7 @@ header {
         text-transform: uppercase;
         font-weight: 700;
         position: relative;
-        font-size: 1.5em;
+        font-size: 1.8em;
 
         .circle {
           border-radius: 50%;
@@ -101,7 +101,7 @@ header {
 
     .dropdown-overflow {
       position: absolute;
-      top: 51px;
+      top: 71px;
       bottom: 0;
       left: 0;
       right: 0;
@@ -218,9 +218,12 @@ footer {
 
 body {
   margin: 0;
-  padding-top: 75px;
+  padding-top: 95px;
   font-family: 'Montserrat', sans-serif;
   //  font-family: 'Raleway', sans-serif;
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
 }
 
 * {
@@ -235,12 +238,6 @@ body {
 
 html {
   height: 100%;
-}
-
-body {
-  min-height: 100%;
-  display: grid;
-  grid-template-rows: 1fr auto;
 }
 
 footer {
@@ -335,11 +332,11 @@ button {
   }
 
   5% {
-    transform: scale(20);
+    transform: scale(22);
   }
 
   99% {
-    transform: scale(20);
+    transform: scale(22);
   }
 
   100% {
