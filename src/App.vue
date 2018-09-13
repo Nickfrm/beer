@@ -38,8 +38,8 @@
           </button>
           <router-link to="/" class="logo" exact>Beers</router-link>
           <div class="search">
-            <input required="required" placeholder="My favourite beer is ..." type="text">
-            <custom-button @click.native="getBeers">
+            <input v-model="filters.name" required="required" placeholder="My favourite beer is ..." type="text">
+            <custom-button @click.native="setSumFilters">
               <font-awesome-icon icon="search" />
             </custom-button>
           </div>
@@ -142,13 +142,14 @@ export default {
         }
       }
       this.$store.commit('addFilters', sumFilters)
-      this.toggleDropdown()
+      console.log(sumFilters)
+      // this.toggleDropdown()
       this.$router.push('/')
     },
     resetAll() {
       this.$store.commit('removeFilters')
       Object.keys(this.filters).forEach(k => (this.filters[k] = ''))
-      this.toggleDropdown()
+      // this.toggleDropdown()
       this.$router.push('/')
     }
   }
