@@ -1,30 +1,28 @@
 <template>
   <div class="content">
-    <section class="beers">
-      <div class="wrap">
-        <div class="main">
-          <div v-if="noList" class="error-msg">
-            Sorry! We have no results from your search. <br> Please change your request and try again.
-          </div>
-          <div v-else class="list ">
-            <div v-for="i in beers " :key="i.id " class="card ">
-              <div class="content">
-                <h4>{{i.name}}</h4>
-                <b>{{i.tagline}}</b>
-                <p>{{i.description}}</p>
-                <router-link :to="`/beers/${i.id}`">Learn more...</router-link>
-              </div>
-              <img :src="`${i.image_url}`" alt=" ">
-              <custom-button @click.native="addToCart(i.id)" :disabled="checkIfAdded(i.id)">Add to cart
-                <font-awesome-icon icon="credit-card" />
-              </custom-button>
+    <div class="wrap">
+      <div class="main">
+        <div v-if="noList" class="error-msg">
+          Sorry! We have no results from your search. <br> Please change your request and try again.
+        </div>
+        <div v-else class="list ">
+          <div v-for="i in beers " :key="i.id " class="card ">
+            <div class="content">
+              <h4>{{i.name}}</h4>
+              <b>{{i.tagline}}</b>
+              <p>{{i.description}}</p>
+              <router-link :to="`/beers/${i.id}`">Learn more...</router-link>
             </div>
-            <custom-button v-if="isNextPageExist && !inlineLoading" @click.native="loadMore" class="light">Load more...</custom-button>
-            <inline-loading v-if="inlineLoading" />
+            <img :src="`${i.image_url}`" alt=" ">
+            <custom-button @click.native="addToCart(i.id)" :disabled="checkIfAdded(i.id)">Add to cart
+              <font-awesome-icon icon="credit-card" />
+            </custom-button>
           </div>
+          <custom-button v-if="isNextPageExist && !inlineLoading" @click.native="loadMore" class="light">Load more...</custom-button>
+          <inline-loading v-if="inlineLoading" />
         </div>
       </div>
-    </section>
+    </div>
   </div>
 </template>
 
@@ -120,64 +118,62 @@ export default {
   margin-bottom: -41px;
   padding-bottom: 71px;
 }
-section.beers {
-  .main {
+.main {
+  display: grid;
+  grid: auto / 1fr 2fr;
+  gap: 32px;
+  .list {
+    grid-column-start: 2;
     display: grid;
-    grid: auto / 1fr 2fr;
-    gap: 32px;
-    .list {
-      grid-column-start: 2;
+    grid: auto / repeat(2, 1fr);
+    gap: 16px;
+    .card {
+      background: #f7f7f7;
+      border: 1px solid #ccc;
+      padding: 20px;
+      font-size: 15px;
       display: grid;
-      grid: auto / repeat(2, 1fr);
+      grid: 210px / 2fr 1fr;
       gap: 16px;
-      .card {
-        background: #f7f7f7;
-        border: 1px solid #ccc;
-        padding: 20px;
-        font-size: 15px;
+      justify-items: center;
+      img {
+        max-height: calc(100% - 38px);
+        max-width: 100%;
+        align-self: center;
+      }
+      .content {
         display: grid;
-        grid: 210px / 2fr 1fr;
-        gap: 16px;
-        justify-items: center;
-        img {
-          max-height: calc(100% - 38px);
-          max-width: 100%;
-          align-self: center;
+        grid-template-rows: repeat(3, auto) 1fr;
+        a {
+          align-self: end;
         }
-        .content {
-          display: grid;
-          grid-template-rows: repeat(3, auto) 1fr;
-          a {
-            align-self: end;
-          }
-        }
-        .btn-cta {
-          width: 100%;
-          line-height: 26px;
-          grid-column: 1 / 3;
-          margin-top: 10px;
-          .fa-credit-card {
-            font-size: 16px;
-            margin-left: 12px;
-          }
+      }
+      .btn-cta {
+        width: 100%;
+        line-height: 26px;
+        grid-column: 1 / 3;
+        margin-top: 10px;
+        .fa-credit-card {
+          font-size: 16px;
+          margin-left: 12px;
         }
       }
     }
-    .btn-cta.light {
-      width: 100%;
-      margin-top: 8px;
-      height: 32px;
-      line-height: 32px;
-      grid-column: 1 / 3;
-    }
-    .spinner {
-      grid-column: 1 / 3;
-      margin-bottom: 24px;
-    }
-    .error-msg {
-      font-size: 22px;
-      text-align: center;
-    }
+  }
+  .btn-cta.light {
+    width: 100%;
+    margin-top: 8px;
+    height: 32px;
+    line-height: 32px;
+    grid-column: 1 / 3;
+  }
+  .spinner {
+    grid-column: 1 / 3;
+    margin-bottom: 24px;
+  }
+  .error-msg {
+    font-size: 22px;
+    text-align: center;
   }
 }
 
