@@ -5,8 +5,6 @@ Vue.use(Vuex)
 
 function saveCart(cart) {
   localStorage.setItem('cart', JSON.stringify(cart))
-  console.log(localStorage)
-
 }
 
 function receiveCart() {

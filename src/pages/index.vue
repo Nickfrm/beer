@@ -26,9 +26,9 @@
 </template>
 
 <script>
-import inlineLoading from '@/components/inline-loading'
+// import inlineLoading from '@/components/inline-loading'
 export default {
-  components: { inlineLoading },
+  // components: { inlineLoading },
   data() {
     return {
       beers: [],

@@ -1,6 +1,5 @@
 <template>
   <div class="loader">
-    <!-- <font-awesome-icon icon="spinner" spin size="3x" /> -->
     <inline-loading/>
     <p>Loading... Please wait...</p>
   </div>
@@ -21,13 +20,10 @@ export default {}
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  .fa-spinner {
-    color: #232323;
-    z-index: 9999;
-  }
+  margin-top: -91px;
   p {
-    margin-top: 30px;
-    font-size: 24px;
+    margin-top: 16px;
+    font-size: 20px;
     color: #232323;
   }
 }

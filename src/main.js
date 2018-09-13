@@ -8,6 +8,7 @@ import customButton from '@/components/button'
 import customSelect from '@/components/custom-select'
 import customLink from '@/components/link'
 import loadingOverlay from '@/components/loading-overlay'
+import inlineLoading from '@/components/inline-loading'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faSpinner, faShoppingCart, faMoneyBillAlt, faCreditCard, faCartArrowDown, faBars, faSearch, faCaretDown, faTimes } from '@fortawesome/free-solid-svg-icons'
 
@@ -24,6 +25,7 @@ Vue.component('custom-select', customSelect.default || customSelect)
 Vue.component('custom-link', customLink.default || customLink)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('loading-overlay', loadingOverlay)
+Vue.component('inline-loading', inlineLoading)
 
 new Vue({
   router,
