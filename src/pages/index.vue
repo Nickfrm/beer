@@ -13,11 +13,12 @@
             <router-link :to="`/beers/${i.id}`">Learn more...</router-link>
           </div>
           <img :src="`${i.image_url}`" alt=" ">
-          <custom-button @click.native="addToCart(i.id)" :disabled="checkIfAdded(i.id)">Add to cart
+          <custom-button v-if="checkIfAdded(i.id)" @click.native="removeFromCart(i)" class="light">Remove from cart</custom-button>
+          <custom-button v-else @click.native="addToCart(i.id)">Add to cart
             <font-awesome-icon icon="credit-card" />
           </custom-button>
         </div>
-        <custom-button v-if="isNextPageExist && !inlineLoading" @click.native="loadMore" class="light">Load more...</custom-button>
+        <custom-button v-if="isNextPageExist && !inlineLoading" @click.native="loadMore" class="light loading">Load more...</custom-button>
         <inline-loading v-if="inlineLoading" />
       </div>
     </div>
@@ -98,6 +99,9 @@ export default {
         id: id
       })
     },
+    removeFromCart(el) {
+      this.$store.commit('removeFromCart', el)
+    },
     checkIfAdded(id) {
       return this.$store.state.cart.includes(id)
     }
@@ -155,7 +159,7 @@ export default {
     }
   }
 }
-.btn-cta.light {
+.btn-cta.loading {
   width: 100%;
   margin-top: 8px;
   height: 32px;
