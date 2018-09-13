@@ -2,36 +2,6 @@
   <div class="content">
     <section class="beers">
       <div class="wrap">
-        <!-- <aside id="sidebar">
-          <h5>Search your beer:</h5>
-          <div class="form search">
-            <input v-model="filters.name" required="required" placeholder="My favourite beer" type="text">
-            <custom-button @click.native="getBeers">Go!</custom-button>
-          </div>
-          <h5>Filters:</h5>
-          <div class="form filters">
-            <div class="form-field">
-              <custom-select v-model="filters.abv" :items="getQueryRanges(abvs, 'abv')" :class="{active:filters.abv}" none="Alcohol by volume" />
-              <custom-select v-model="filters.ibu" :items="getQueryRanges(ibus, 'ibu')" :class="{active:filters.ibu}" none="Bitterness" />
-              <div class="ebc">
-                <label>
-                  <input type="radio" value="ebc_lt=20" v-model="filters.ebc"> Light beer
-                </label>
-                <label>
-                  <input type="radio" value="ebc_gt=20" v-model="filters.ebc"> Dark beer
-                </label>
-              </div>
-              <custom-select v-model="filters.dateOfBrew" :items="getQueryRanges(brewedDates, 'brewed')" :class="{active:filters.dateOfBrew}" none="Date of brew" />
-              <input type="text" v-model="filters.hops" placeholder="The hops you want">
-              <input type="text" v-model="filters.malt" placeholder="The malt you want">
-              <input type="text" v-model="filters.food" placeholder="The food you want">
-            </div>
-            <custom-button @click.native="getBeers">Apply</custom-button>
-            <div class="tar">
-              <custom-link type="button" @click.native="resetAll">Reset All</custom-link>
-            </div>
-          </div>
-        </aside> -->
         <div class="main">
           <div v-if="noList" class="error-msg">
             Sorry! We have no results from your search. <br> Please change your request and try again.
@@ -65,40 +35,11 @@ export default {
   data() {
     return {
       beers: [],
-      // filters: {
-      //   abv: '',
-      //   ibu: '',
-      //   ebc: '',
-      //   dateOfBrew: '',
-      //   hops: '',
-      //   malt: '',
-      //   food: '',
-      //   name: ''
-      // },
       sumFilters: '',
       noList: false,
       currentPage: 1,
       isNextPageExist: true,
       inlineLoading: 0
-      // brewedDates: [
-      //   { name: '2007-2009', before: '12-2009', after: '01-2007' },
-      //   { name: '2009-2011', before: '12-2011', after: '01-2009' },
-      //   { name: '2011-2013', before: '12-2013', after: '01-2011' },
-      //   { name: '2013-2015', before: '12-2015', after: '01-2013' }
-      // ],
-      // ibus: [
-      //   { name: 'Slight bitterness', lt: 10 },
-      //   { name: 'Medium bitterness', lt: 45, gt: 25 },
-      //   { name: 'Strong bitterness', lt: 80, gt: 45 },
-      //   { name: 'Try not to cry', lt: 120, gt: 80 }
-      // ],
-      // abvs: [
-      //   { name: 'Very low alcoholic', lt: 4 },
-      //   { name: 'Low alcoholic', gt: 4, lt: 10 },
-      //   { name: 'Medium alcoholic', gt: 10, lt: 20 },
-      //   { name: 'High alcoholic', gt: 20, lt: 35 },
-      //   { name: 'Blowing your mind', gt: 35 }
-      // ]
     }
   },
   created() {
@@ -149,44 +90,6 @@ export default {
           this.$store.commit('loadingOff')
         })
     },
-    // getQueryRanges(arr, queryName) {
-    //   return arr.map(e => {
-    //     let id = ''
-    //     for (const k in e) {
-    //       if (e.hasOwnProperty(k) && k != 'name') {
-    //         const el = e[k]
-    //         if (el) {
-    //           if (id) id += '&'
-    //           id += `${queryName}_${k}=${el}`
-    //         }
-    //       }
-    //     }
-    //     return {
-    //       id,
-    //       name: e.name
-    //     }
-    //   })
-    // },
-    // setSumFilters() {
-    //   this.sumFilters = ''
-    //   for (let key in this.filters) {
-    //     let el = this.filters[key]
-    //     if (el) {
-    //       if (['hops', 'malt', 'food', 'name'].includes(key)) {
-    //         if (key === 'name') key = 'beer_name'
-    //         this.sumFilters += `&${key}=${el}`
-    //       } else {
-    //         this.sumFilters += `&${el}`
-    //       }
-    //     }
-    //   }
-    // },
-    // resetAll() {
-    //   this.sumFilters = ''
-    //   Object.keys(this.filters).forEach(k => (this.filters[k] = ''))
-    //   this.getBeers()
-    //   this.noList = false
-    // },
     loadMore() {
       this.currentPage += 1
       this.inlineLoading = 1
@@ -218,69 +121,6 @@ export default {
   padding-bottom: 71px;
 }
 section.beers {
-  aside {
-    width: 338px;
-    overflow: auto;
-    padding: 20px 30px;
-    background-color: $grey;
-    border: 1px solid #ccc;
-    position: fixed;
-    top: 75px;
-    .search {
-      margin-bottom: 20px;
-      display: grid;
-      grid: auto / 2fr 1fr;
-      grid-gap: 20px;
-    }
-    input[type='text'] {
-      height: 26px;
-      padding: 0 10px;
-      border: 1px solid #ccc;
-      &::placeholder {
-        color: #aaa;
-        font-size: 14px;
-      }
-    }
-    .filters {
-      .form-field {
-        margin-bottom: 32px;
-        display: grid;
-        grid-gap: 16px;
-        select {
-          width: 100%;
-          height: 28px;
-          font-size: 14px;
-          border: 1px solid #ccc;
-          color: #aaa;
-          padding-left: 10px;
-          &.active {
-            color: #333;
-            border-color: #bbb;
-          }
-          option {
-            color: #333;
-          }
-        }
-        .ebc {
-          display: grid;
-          grid: auto / 1fr 1fr;
-          font-size: 14px;
-          align-items: center;
-          color: #333;
-          div {
-            display: flex;
-          }
-        }
-      }
-      .btn-cta {
-        width: 100%;
-        margin-bottom: 16px;
-      }
-      .link {
-        text-align: right;
-      }
-    }
-  }
   .main {
     display: grid;
     grid: auto / 1fr 2fr;
