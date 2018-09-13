@@ -1,17 +1,21 @@
 
 <template>
   <div class="cart">
-    <div class="error" v-if="error || isCartEmpty">
-      <font-awesome-icon icon="cart-arrow-down" size="2x" />
-      <p>Ooops, your cart is empty</p>
-    </div>
     <div class="wrap">
+      <h3>My Cart</h3>
+      <div class="error tac" v-if="error || isCartEmpty">
+        <font-awesome-icon icon="cart-arrow-down" />
+        <p>
+          <b>Your cart is empty.</b> <br> To add products please check our
+          <router-link to="/">catalog.</router-link>
+        </p>
+      </div>
       <div v-for="ci in cart" :key="ci.id" class="item">
         <img :src="`${ci.image_url}`">
         <router-link :to="`/beers/${ci.id}`" class="link">{{ci.name}}</router-link>
-        <p>
+        <!-- <p>
           <b>{{ci.tagline}}</b>
-        </p>
+        </p> -->
         <custom-button @click.native="remove(ci)">Remove from cart</custom-button>
       </div>
     </div>
@@ -69,14 +73,20 @@ export default {
     display: grid;
     gap: 16px;
   }
+  h3 {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+  }
   .item {
-    padding: 15px 10px;
-    background-color: $grey;
+    padding: 12px;
+    background-color: #f7f7f7;
     border: 1px solid #ccc;
     display: grid;
-    grid: 50px / 100px 1fr 1fr 0.8fr;
+    // grid: 30px / 40px 1fr 1fr 0.8fr;
+    grid: 30px / 40px 3fr 1fr;
     gap: 20px;
     align-items: center;
+    border-radius: 4px;
     img {
       height: 100%;
       justify-self: center;
@@ -84,19 +94,32 @@ export default {
     .link {
       margin: 0;
       color: #000;
-      font-size: 1.333em;
+      font-size: 19px;
+    }
+    .btn-cta {
+      height: 30px;
+      line-height: 30px;
     }
   }
   .error {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    font-weight: 700;
+    // display: flex;
+    // flex-direction: column;
+    // height: 100%;
+    // align-items: center;
+    // justify-content: center;
+    p {
+      line-height: 26px;
+      b {
+        font-size: 20px;
+        font-weight: 700;
+      }
+    }
+
     .fa-cart-arrow-down {
       display: block;
+      margin: auto;
+      font-size: 40px;
+      color: #232323;
     }
   }
 }
