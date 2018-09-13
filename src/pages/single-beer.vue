@@ -72,7 +72,9 @@ export default {
 <style lang="scss">
 @import '~styles/variables';
 .single-beer {
-  padding-bottom: 24px;
+  height: 100%;
+  margin-bottom: -41px;
+  padding-bottom: 71px;
   .wrap {
     padding: 30px;
     background-color: $grey;
@@ -81,6 +83,7 @@ export default {
     grid: auto / 3fr 2fr;
     gap: 20px;
     justify-items: center;
+    border-radius: 4px;
     img {
       height: 450px;
     }

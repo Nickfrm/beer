@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <loading-overlay v-if="$store.state.loading"></loading-overlay>
     <header>
       <div class="wrap">
         <div class="dropdown-overflow" :class="{active:dropdown}" @click.self="toggleDropdown">
@@ -55,7 +56,7 @@
     <footer>
       <div class="wrap">All right reserved. 2018</div>
     </footer>
-    <loading-overlay v-if="$store.state.loading"></loading-overlay>
+
   </div>
 </template>
 

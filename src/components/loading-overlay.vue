@@ -1,6 +1,7 @@
 <template>
   <div class="loader">
-    <font-awesome-icon icon="spinner" spin size="3x" />
+    <!-- <font-awesome-icon icon="spinner" spin size="3x" /> -->
+    <inline-loading/>
     <p>Loading... Please wait...</p>
   </div>
 </template>

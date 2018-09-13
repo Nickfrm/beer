@@ -31,6 +31,7 @@ export default {
   padding: 0 15px;
   transition: 0.3s ease;
   cursor: pointer;
+  border-radius: 4px;
   &:hover {
     background-color: $main;
     border-color: $main;
