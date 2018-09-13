@@ -98,7 +98,8 @@ export default {
     }
   },
   created() {
-    this.$store.commit('fillCart'), this.$store.commit('fillFilters')
+    this.$store.commit('fillCart')
+    this.$store.commit('fillFilters')
   },
   computed: {
     sumCart() {
@@ -113,7 +114,7 @@ export default {
       return arr.map(e => {
         let id = ''
         for (const k in e) {
-          if (e.hasOwnProperty(k) && k != 'name') {
+          if (e.hasOwnProperty(k) && k !== 'name') {
             const el = e[k]
             if (el) {
               if (id) id += '&'
