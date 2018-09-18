@@ -146,6 +146,8 @@ export default {
       grid-template-rows: repeat(3, auto) 1fr;
       a {
         align-self: end;
+        text-transform: uppercase;
+        font-size: 14px;
       }
     }
     .btn-cta {
