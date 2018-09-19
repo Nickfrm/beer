@@ -112,7 +112,7 @@ header {
       transition: all .1s ease-out;
 
       &.active {
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: rgba(0, 0, 0, 0.15);
         pointer-events: auto;
       }
     }
