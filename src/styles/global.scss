@@ -77,6 +77,7 @@ header {
         font-weight: 700;
         position: relative;
         font-size: 1.8em;
+        color: $l-main;
 
         .circle {
           border-radius: 50%;
@@ -96,7 +97,7 @@ header {
       }
 
       &:hover {
-        color: #000;
+        color: $main;
       }
     }
 
