@@ -6,6 +6,7 @@ header {
   width: 100%;
   border-bottom: 1px solid #ccc;
   background-color: $l-grey;
+  z-index: 990;
 
   > .wrap {
     height: 70px;
@@ -20,23 +21,7 @@ header {
       align-items: center;
       grid-gap: 24px;
 
-      .menu {
-        border: none;
-        background: none;
-        padding: 0;
-        width: 22px;
 
-        .fa-bars,
-        .fa-times {
-          font-size: 26px;
-          color: $l-main;
-          transition: all 0.3s ease;
-
-          &:hover {
-            color: $main;
-          }
-        }
-      }
 
       .search {
         margin-left: 24px;
@@ -69,7 +54,8 @@ header {
       &.logo {
         font-size: 32px;
         font-weight: 900;
-        color: #232323;
+        color: $l-main;
+        text-shadow: 1px -1px 0px $l-main;
       }
 
       &.cart {
@@ -98,102 +84,7 @@ header {
 
       &:hover {
         color: $main;
-      }
-    }
-
-    .dropdown-overflow {
-      position: absolute;
-      top: 71px;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background-color: transparent;
-      height: 100vh;
-      pointer-events: none;
-      transition: all .1s ease-out;
-
-      &.active {
-        background-color: rgba(0, 0, 0, 0.15);
-        pointer-events: auto;
-      }
-    }
-
-    .dropdown {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      background-color: #f6f6f6;
-      height: 0;
-      width: 100%;
-      transition: all .1s ease-out;
-      opacity: 0;
-      pointer-events: none;
-
-      .wrap {
-        padding: 24px 0;
-
-        .filters {
-          display: grid;
-          grid: auto / repeat(3, 1fr);
-          grid-gap: 40px;
-          margin-bottom: 12px;
-
-          select {
-            width: 100%;
-            height: 28px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            color: #aaa;
-            padding-left: 10px;
-            margin-bottom: 12px;
-
-
-            &.active {
-              color: #333;
-              border-color: #bbb;
-            }
-
-            option {
-              color: #333;
-            }
-          }
-
-          input[type='text'] {
-            height: 28px;
-            padding: 0 10px;
-            width: 100%;
-            margin-bottom: 12px;
-
-
-            &::placeholder {
-              color: #aaa;
-              font-size: 14px;
-            }
-          }
-
-          .ebc {
-            font-size: 14px;
-            color: #333;
-            margin-top: 5px;
-
-            label {
-              padding-right: 5px;
-            }
-          }
-        }
-      }
-
-      .btn-cta {
-        margin-right: 20px;
-        padding: 0 40px;
-      }
-
-      &.active {
-        border-bottom: 1px solid #ccc;
-        height: 209px;
-        opacity: 1;
-        pointer-events: auto;
+        text-shadow: 1px -1px 0px $main;
       }
     }
   }
@@ -272,7 +163,7 @@ h2 {
 }
 
 h3 {
-  font-size: 1.777em;
+  font-size: 1.7em;
 }
 
 h4 {

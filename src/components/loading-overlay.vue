@@ -21,6 +21,7 @@ export default {}
   justify-content: center;
   flex-direction: column;
   margin-top: -91px;
+  z-index: 980;
   p {
     margin-top: 16px;
     font-size: 20px;

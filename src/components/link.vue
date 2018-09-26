@@ -22,6 +22,8 @@ export default {
   display: inline;
   transition: all 0.3s ease;
   text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 700;
   cursor: pointer;
   padding: 0;
   &:hover {

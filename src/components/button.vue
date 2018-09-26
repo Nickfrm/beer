@@ -27,7 +27,7 @@ export default {
   font-size: 15px;
   text-transform: uppercase;
   height: 36px;
-  line-height: 36px;
+  line-height: 26px;
   padding: 0 15px;
   transition: 0.3s ease;
   cursor: pointer;
