@@ -4,7 +4,7 @@
     <div class="wrap">
       <div class="title">
         <h3>My Cart</h3>
-        <custom-button>Checkout
+        <custom-button v-if="!isCartEmpty">Checkout
           <font-awesome-icon icon="credit-card" />
         </custom-button>
       </div>
@@ -80,6 +80,7 @@ export default {
     display: grid;
     gap: 0;
   }
+
   .title {
     border-bottom: 1px solid #ccc;
     padding-bottom: 20px;
@@ -124,11 +125,7 @@ export default {
     }
   }
   .error {
-    // display: flex;
-    // flex-direction: column;
-    // height: 100%;
-    // align-items: center;
-    // justify-content: center;
+    margin-top: 30px;
     p {
       line-height: 26px;
       b {
