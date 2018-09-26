@@ -39,7 +39,9 @@
             <!-- <input type="range" min="1" max="2"> -->
           </div>
         </div>
-        <custom-button @click.native="setSumFilters">Apply filters</custom-button>
+        <custom-button @click.native="setSumFilters">Apply filters
+          <font-awesome-icon icon="check" />
+        </custom-button>
         <custom-link type="button" @click.native="resetAll">Reset All</custom-link>
         <!-- </div> -->
         <!-- </div> -->
@@ -58,12 +60,16 @@
             <router-link :to="`/beers/${i.id}`">Learn more...</router-link>
           </div>
           <img :src="`${i.image_url}`" alt=" ">
-          <custom-button v-if="checkIfAdded(i.id)" @click.native="removeFromCart(i)" class="light">Remove from cart</custom-button>
+          <custom-button v-if="checkIfAdded(i.id)" @click.native="removeFromCart(i)" class="light">Remove from cart
+            <font-awesome-icon icon="trash" />
+          </custom-button>
           <custom-button v-else @click.native="addToCart(i.id)">Add to cart
             <font-awesome-icon icon="cart-plus" />
           </custom-button>
         </div>
-        <custom-button v-if="isNextPageExist && !inlineLoading" @click.native="loadMore" class="light loading">Load more...</custom-button>
+        <custom-button v-if="isNextPageExist && !inlineLoading" @click.native="loadMore" class="loading">Load more...
+          <font-awesome-icon icon="arrow-alt-circle-down" />
+        </custom-button>
         <inline-loading v-if="inlineLoading" />
       </div>
     </div>
@@ -240,52 +246,29 @@ export default {
   height: 100%;
   margin-bottom: -41px;
   padding-bottom: 71px;
-}
-
-.menu {
-  border: none;
-  background: none;
-  padding: 0;
-  width: 22px;
-
-  .fa-bars,
-  .fa-times {
-    font-size: 26px;
-    color: $l-main;
-    transition: all 0.3s ease;
-
-    &:hover {
-      color: $main;
-    }
+  .fa-cart-plus,
+  .fa-trash,
+  .fa-check {
+    font-size: 15px;
+    margin-left: 12px;
   }
 }
 
-.dropdown-overflow {
-  position: absolute;
-  top: 71px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: transparent;
-  height: 100vh;
-  pointer-events: none;
-  transition: all 0.1s ease-out;
-
-  &.active {
-    background-color: rgba(0, 0, 0, 0.15);
-    pointer-events: auto;
-  }
-}
 .filters-wrap {
   margin-bottom: 40px;
   padding-bottom: 24px;
   border-bottom: 1px solid #ccc;
+  > .btn-cta {
+    margin-right: 20px;
+    padding: 0 40px;
+  }
 }
 .filters {
   display: grid;
   grid: auto / repeat(3, 1fr);
   grid-gap: 40px;
   margin-bottom: 12px;
+
   select {
     width: 100%;
     height: 28px;
@@ -415,10 +398,6 @@ export default {
   // }
 }
 
-.btn-cta {
-  margin-right: 20px;
-  padding: 0 40px;
-}
 .list {
   display: grid;
   grid: auto / 1fr 1fr 1fr;
@@ -451,19 +430,19 @@ export default {
       width: 100%;
       grid-column: 1 / 3;
       margin-top: 10px;
-      .fa-cart-plus {
-        font-size: 15px;
-        margin-left: 12px;
-      }
     }
   }
 }
 .btn-cta.loading {
   width: 100%;
-  margin-top: 8px;
-  height: 32px;
-  line-height: 32px;
+  margin: 4px auto 0;
+  height: 36px;
   grid-column: 1 / 4;
+  background-color: $l-main-two;
+  color: #fff;
+  &:hover {
+    background-color: $l-main;
+  }
 }
 .spinner {
   grid-column: 1 / 4;

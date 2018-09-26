@@ -2,7 +2,12 @@
 <template>
   <div class="cart">
     <div class="wrap">
-      <h3>My Cart</h3>
+      <div class="title">
+        <h3>My Cart</h3>
+        <custom-button>Checkout
+          <font-awesome-icon icon="credit-card" />
+        </custom-button>
+      </div>
       <div class="error tac" v-if="error || isCartEmpty">
         <font-awesome-icon icon="cart-arrow-down" />
         <p>
@@ -16,7 +21,9 @@
         <!-- <p>
           <b>{{ci.tagline}}</b>
         </p> -->
-        <custom-button @click.native="remove(ci)">Remove from cart</custom-button>
+        <custom-button class="light" @click.native="remove(ci)">Remove
+          <font-awesome-icon icon="trash" />
+        </custom-button>
       </div>
     </div>
   </div>
@@ -71,19 +78,28 @@ export default {
   padding-bottom: 71px;
   .wrap {
     display: grid;
-    gap: 16px;
+    gap: 0;
+  }
+  .title {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    .fa-credit-card {
+      margin-left: 8px;
+    }
   }
   h3 {
-    padding-bottom: 20px;
-    border-bottom: 1px solid #ccc;
+    margin-bottom: 0;
+    color: #000;
+    display: inline-block;
   }
   .item {
-    padding: 12px;
-    background-color: #f7f7f7;
-    border: 1px solid #ccc;
+    padding: 20px 0;
+    border-bottom: 1px solid #ccc;
     display: grid;
     // grid: 30px / 40px 1fr 1fr 0.8fr;
-    grid: 30px / 40px 3fr 1fr;
+    grid: 30px / 40px 6fr 1fr;
     gap: 20px;
     align-items: center;
     border-radius: 4px;
@@ -98,7 +114,13 @@ export default {
     }
     .btn-cta {
       height: 30px;
-      line-height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .fa-trash {
+        margin-left: 8px;
+        font-size: 12px;
+      }
     }
   }
   .error {
