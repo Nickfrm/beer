@@ -136,7 +136,7 @@ export default {
     gap: 30px;
     justify-items: center;
     border-radius: 4px;
-    > div:first-child {
+    > div {
       width: 100%;
     }
   }
