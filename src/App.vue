@@ -46,8 +46,10 @@ export default {
   },
   methods: {
     searchBeer() {
-      this.$store.commit('addFilters', `&beer_name=${this.search}`)
-      this.$router.push('/')
+      if (this.search) {
+        this.$store.commit('addFilters', `&beer_name=${this.search}`)
+        this.$router.push('/')
+      }
     }
   }
 }
