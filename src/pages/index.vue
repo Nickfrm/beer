@@ -260,7 +260,7 @@ export default {
   border-bottom: 1px solid #ccc;
   > .btn-cta {
     margin-right: 20px;
-    padding: 0 40px;
+    padding: 0 24px;
   }
 }
 .filters {
@@ -305,14 +305,14 @@ export default {
     color: #333;
     display: grid;
     grid: auto/ 1fr auto 1fr;
-    grid-gap: 32px;
+    grid-gap: 36px;
     color: #aaa;
     margin-top: 5px;
     .radio {
       position: relative;
       label {
         cursor: pointer;
-        line-height: 20px;
+        line-height: 22px;
         // position: relative;
         &.checked {
           color: #000;
@@ -350,9 +350,9 @@ export default {
           transition: background 0.25s ease;
         }
       }
-      span {
-        line-height: 20px;
-      }
+    }
+    span {
+      line-height: 22px;
     }
   }
 
