@@ -59,7 +59,7 @@
             <p>{{i.description}}</p>
             <router-link :to="`/beers/${i.id}`" class="link">Learn more...</router-link>
           </div>
-          <img :src="`${i.image_url}`" alt=" ">
+          <router-link :to="`/beers/${i.id}`"> <img :src="`${i.image_url}`" alt=" "></router-link>
           <custom-button v-if="checkIfAdded(i.id)" @click.native="removeFromCart(i)" class="light">Remove from cart
             <font-awesome-icon icon="trash" />
           </custom-button>
@@ -412,6 +412,10 @@ export default {
     gap: 16px;
     justify-items: center;
     border-radius: 4px;
+    > a {
+      width: 100%;
+      align-self: center;
+    }
     img {
       max-height: calc(100% - 38px);
       max-width: 100%;
