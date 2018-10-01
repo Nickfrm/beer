@@ -403,7 +403,7 @@ export default {
   grid: auto / 1fr 1fr 1fr;
   gap: 16px 20px;
   .card {
-    background: #f7f7f7;
+    background: #fdfdfd;
     border: 1px solid #ccc;
     padding: 28px 22px;
     font-size: 15px;
