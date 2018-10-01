@@ -4,7 +4,7 @@
     <div class="wrap">
       <div class="title">
         <h3>My Cart</h3>
-        <custom-button v-if="!isCartEmpty">Checkout
+        <custom-button v-if="!isCartEmpty" class="orange">Checkout
           <font-awesome-icon icon="credit-card" />
         </custom-button>
       </div>
@@ -12,7 +12,7 @@
         <font-awesome-icon icon="cart-arrow-down" />
         <p>
           <b>Your cart is empty.</b> <br> To add products please check our
-          <router-link to="/">catalog.</router-link>
+          <router-link to="/" class="link orange">catalog.</router-link>
         </p>
       </div>
       <div v-for="ci in cart" :key="ci.id" class="item">
@@ -131,6 +131,10 @@ export default {
       b {
         font-size: 20px;
         font-weight: 700;
+      }
+      a {
+        text-transform: none;
+        font-size: 17px;
       }
     }
 

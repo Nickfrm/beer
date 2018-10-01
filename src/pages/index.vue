@@ -39,7 +39,7 @@
             <!-- <input type="range" min="1" max="2"> -->
           </div>
         </div>
-        <custom-button @click.native="setSumFilters">Apply filters
+        <custom-button @click.native="setSumFilters" class="orange">Apply filters
           <font-awesome-icon icon="check" />
         </custom-button>
         <custom-link type="button" @click.native="resetAll">Reset All</custom-link>
@@ -57,7 +57,7 @@
             <h4>{{i.name}}</h4>
             <b>{{i.tagline}}</b>
             <p>{{i.description}}</p>
-            <router-link :to="`/beers/${i.id}`">Learn more...</router-link>
+            <router-link :to="`/beers/${i.id}`" class="link">Learn more...</router-link>
           </div>
           <img :src="`${i.image_url}`" alt=" ">
           <custom-button v-if="checkIfAdded(i.id)" @click.native="removeFromCart(i)" class="light">Remove from cart
@@ -67,7 +67,7 @@
             <font-awesome-icon icon="cart-plus" />
           </custom-button>
         </div>
-        <custom-button v-if="isNextPageExist && !inlineLoading" @click.native="loadMore" class="loading">Load more...
+        <custom-button v-if="isNextPageExist && !inlineLoading" @click.native="loadMore" class="loading orange">Load more...
           <font-awesome-icon icon="arrow-alt-circle-down" />
         </custom-button>
         <inline-loading v-if="inlineLoading" />

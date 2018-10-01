@@ -5,7 +5,7 @@ header {
   top: 0;
   width: 100%;
   border-bottom: 1px solid #ccc;
-  background-color: $l-grey;
+  background-color: $main;
   z-index: 990;
 
   > .wrap {
@@ -46,6 +46,11 @@ header {
           vertical-align: bottom;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
+
+          &:hover {
+            background-color: $l-main-two;
+            border-color: $l-main-two;
+          }
         }
       }
     }
@@ -54,8 +59,8 @@ header {
       &.logo {
         font-size: 32px;
         font-weight: 900;
-        color: $l-main;
-        text-shadow: 1px -1px 0px $l-main;
+        color: #fff;
+        text-shadow: 1px -1px 0px #fff;
       }
 
       &.cart {
@@ -63,7 +68,7 @@ header {
         font-weight: 700;
         position: relative;
         font-size: 1.8em;
-        color: $l-main;
+        color: #fff;
 
         .circle {
           border-radius: 50%;
@@ -72,19 +77,22 @@ header {
           position: absolute;
           top: -3px;
           right: -7px;
-          background-color: #ab5595;
+          // background-color: #ab5595;
+          background-color: #c28030;
           color: #fff;
           font-weight: 300;
           font-size: 13px;
           display: flex;
           align-items: center;
           justify-content: center;
+          text-shadow: none !important;
         }
       }
 
       &:hover {
-        color: $main;
-        text-shadow: 1px -1px 0px $main;
+        // color: $l-main-two;
+        // text-shadow: 1px -1px 0px $light;
+        // transform: scale(1.05);
       }
     }
   }
@@ -122,6 +130,7 @@ body {
   min-height: 100%;
   display: grid;
   grid-template-rows: 1fr auto;
+  // color: #232323;
 }
 
 * {
@@ -199,7 +208,7 @@ button {
   position: relative;
 
   .focus {
-    background-color: $d-grey;
+    background-color: $l-main;
     border-radius: 60%;
     position: absolute;
     top: 0;

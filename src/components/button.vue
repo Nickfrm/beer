@@ -45,6 +45,14 @@ export default {
       color: #444;
     }
   }
+  &.orange {
+    background-color: $accent;
+    border: 1px solid $accent;
+    &:hover {
+      border-color: $l-accent;
+      background-color: $l-accent;
+    }
+  }
   &:disabled {
     color: #bbb;
     background-color: #888;

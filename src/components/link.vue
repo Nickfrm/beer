@@ -29,5 +29,11 @@ export default {
   &:hover {
     color: $main;
   }
+  &.orange {
+    color: $accent;
+    &:hover {
+      color: $l-accent;
+    }
+  }
 }
 </style>
